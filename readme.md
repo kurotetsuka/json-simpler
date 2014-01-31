@@ -6,6 +6,8 @@ An add-on for the json-simple library
 By: Kalev Kalda Sikes  
 [github.com/KiwiStrongis/json-simpler](https://github.com/KiwiStrongis/json-simpler)
 
+I need a license!!!
+
 This code uses some libraries. These libraries should be in the lib/ folder.
  * json-simple : [code.google.com/p/json-simple](http://code.google.com/p/json-simple/)
 

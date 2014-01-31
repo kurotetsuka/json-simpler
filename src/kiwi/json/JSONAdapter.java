@@ -12,17 +12,21 @@ public class JSONAdapter {
 
 	//constructors
 	public JSONAdapter( Object object){
-		if( object == null)
-			throw new NullPointerException(
-				"JSONAdapter passed a null object");
-		if( ( object instanceof JSONObject) || 
-				( object instanceof JSONArray))
+		if( ( object == null) ||
+				( object instanceof JSONObject) || 
+				( object instanceof JSONArray) || 
+				( object instanceof String) || 
+				( object instanceof Number) || 
+				( object instanceof Boolean))
 			root = object;
 		else throw new ClassCastException(
-			"JSONAdapter passed an object that was neither a json-simple object nor array.");}
+			"JSONAdapter passed an object that was not a json-simple type.");}
 
 	//main get function
 	public JSONAdapter get( String tag){
+		//validation
+		if( tag == null)
+			throw new NullPointerException();
 		//setup
 		Vector<Token> tokens = getTokens( tag);
 		if( tokens == null ) return null;
@@ -41,9 +45,106 @@ public class JSONAdapter {
 				JSONArray current = (JSONArray) object;
 				object = current.get( token.index);}
 			//we cant go any deeper, something's gone wrong
-			else return null;}
+			else throw new java.util.NoSuchElementException(
+				String.format( "Could not find element %s", tag));}
+		//we're done, return
 		return new JSONAdapter( object);}
 
+	//validation functions
+	public boolean isBoolean(){
+		return root instanceof Boolean;}
+	public boolean isDecimal(){
+		return root instanceof Double;}
+	public boolean isInteger(){
+		return root instanceof Long;}
+	public boolean isNull(){
+		return root == null;}
+	public boolean isNumber(){
+		return root instanceof Number;}
+	public boolean isString(){
+		return root instanceof String;}
+
+	public boolean isBoolean( String tag){
+		return get( tag).isBoolean();}
+	public boolean isDecimal( String tag){
+		return get( tag).isDecimal();}
+	public boolean isInteger( String tag){
+		return get( tag).isInteger();}
+	public boolean isNull( String tag){
+		return get( tag).isNull();}
+	public boolean isNumber( String tag){
+		return get( tag).isNumber();}
+	public boolean isString( String tag){
+		return get( tag).isString();}
+
+	//validation functions
+	public boolean getBoolean(){
+		if( isBoolean())
+			return ( (Boolean) root).booleanValue();
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Boolean.class.getName()));}
+	public double getDouble(){
+		if( isDecimal())
+			return ( (Double) root).doubleValue();
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Double.class.getName()));}
+	public float getFloat(){
+		if( isDecimal())
+			return ( (Float) root).floatValue();
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Float.class.getName()));}
+	public int getInteger(){
+		if( isInteger())
+			return ( (Integer) root).intValue();
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Integer.class.getName()));}
+	public long getLong(){
+		if( isInteger())
+			return ( (Long) root).longValue();
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Long.class.getName()));}
+	public String getString(){
+		if( isString())
+			return (String) root;
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				String.class.getName()));}
+
+	public boolean getBoolean( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getBoolean();}
+	public double getDouble( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getDouble();}
+	public float getFloat( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getFloat();}
+	public int getInteger( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getInteger();}
+	public long getLong( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getLong();}
+	public String getString( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getString();}
 
 	//utility methods
 	public static Vector<Token> getTokens( String tag){
@@ -98,9 +199,15 @@ public class JSONAdapter {
 			//remove token from substring
 			content = content.substring(
 				label.length() + ( token.symbol ? 1 : 2));
-			System.out.printf( "%s : %s\n", label, content);
+			//System.out.printf( "%s : %s\n", label, content);
 			tokens.add( token);}
 		return tokens;}
+
+	//accessor methods
+	public String toString(){
+		return root == null ?
+			"null" :
+			root.toString();}
 
 	//subclasses
 	public static class Token {

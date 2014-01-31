@@ -31,44 +31,42 @@ public class TestJSONAdapter {
 		System.out.println();
 
 		System.out.println( "Test 4");
-		test( data1, null);
-		System.out.println();
-
-		System.out.println( "Test 5");
-		boolean pass7 = false;
+		boolean pass4 = false;
 		try{
-			new JSONAdapter( null);}
+			test( data1, null);}
 		catch( NullPointerException exception){
-			pass7 = true;
+			pass4 = true;
 			System.out.println("Pass - null pointer exception recieved");}
 		catch( Exception exception){
 			exception.printStackTrace();}
+		System.out.println();
+
+		System.out.println( "Test 5");
+		boolean pass5 = false;
+		System.out.println( new JSONAdapter( null));
 		System.out.println();
 
 		System.out.println( "Test 6");
 		test( data3, request4);
 		System.out.println();
 
-		System.out.println( "Test 6");
+		System.out.println( "Test 7");
 		test( data1, request5);
 		System.out.println();}
 
 	public static void test( String data, String request){
-		try{
-			//load root object
-			Object root = null;
-			try {
-				root = new JSONParser().parse( data);}
-			catch( ParseException exception){
-				System.out.println( "Parsing JSON file failed.");}
+		//load root object
+		Object root = null;
+		try {
+			root = new JSONParser().parse( data);}
+		catch( ParseException exception){
+			System.out.println( "Parsing JSON file failed.");}
 
-			//load adapter
-			JSONAdapter adapter = new JSONAdapter( root);
+		//load adapter
+		JSONAdapter adapter = new JSONAdapter( root);
 
-			//get request
-			System.out.printf( "data: %s\n", data);
-			System.out.printf( "request: %s\n", request);
-			System.out.printf( "result: %s\n", adapter.get( request));}
-		catch( Exception exception){
-			exception.printStackTrace();}}
+		//get request
+		System.out.printf( "data: %s\n", data);
+		System.out.printf( "request: %s\n", request);
+		System.out.printf( "result: %s\n", adapter.get( request));}
 }

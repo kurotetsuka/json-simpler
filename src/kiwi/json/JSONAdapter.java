@@ -63,6 +63,10 @@ public class JSONAdapter {
 		return root instanceof Number;}
 	public boolean isString(){
 		return root instanceof String;}
+	public boolean isJSONArray(){
+		return root instanceof JSONArray;}
+	public boolean isJSONObject(){
+		return root instanceof JSONObject;}
 
 	public boolean isBoolean( String tag){
 		return get( tag).isBoolean();}
@@ -76,6 +80,10 @@ public class JSONAdapter {
 		return get( tag).isNumber();}
 	public boolean isString( String tag){
 		return get( tag).isString();}
+	public boolean isJSONArray( String tag){
+		return get( tag).isJSONArray();}
+	public boolean isJSONObject( String tag){
+		return get( tag).isJSONObject();}
 
 	//validation functions
 	public boolean getBoolean(){
@@ -126,6 +134,24 @@ public class JSONAdapter {
 				"%s cannot be cast to %s",
 				root.getClass().getName(),
 				String.class.getName()));}
+	public JSONArray getJSONArray(){
+		if( isJSONArray())
+			return (JSONArray) root;
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				JSONArray.class.getName()));}
+	public JSONObject getJSONObject(){
+		if( isJSONObject())
+			return (JSONObject) root;
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				JSONObject.class.getName()));}
+	public Object getObject(){
+		return root;}
 
 	public boolean getBoolean( String tag){
 		JSONAdapter adapter = get( tag);
@@ -145,6 +171,15 @@ public class JSONAdapter {
 	public String getString( String tag){
 		JSONAdapter adapter = get( tag);
 		return adapter.getString();}
+	public JSONArray getJSONArray( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getJSONArray();}
+	public JSONObject getJSONObject( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getJSONObject();}
+	public Object getObject( String tag){
+		JSONAdapter adapter = get( tag);
+		return adapter.getObject();}
 
 	//utility methods
 	public static Vector<Token> getTokens( String tag){

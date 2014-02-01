@@ -68,5 +68,111 @@ public class TestJSONAdapter {
 		//get request
 		System.out.printf( "data: %s\n", data);
 		System.out.printf( "request: %s\n", request);
-		System.out.printf( "result: %s\n", adapter.get( request));}
+		JSONAdapter result = adapter.get( request);
+		System.out.printf( "result: (%s) %s\n",
+			result.getObject().getClass().getName(),
+			result);
+
+		//try all the casts
+		try{
+			System.out.printf(
+				"result as boolean: %b\n", result.getBoolean());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as double: %f\n", result.getDouble());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as float: %g\n", result.getFloat());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as integer: %d\n", result.getInteger());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as long: %d\n", result.getLong());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as string: %s\n", result.getString());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as json object: %s\n", result.getJSONObject());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as json array: %s\n", result.getJSONArray());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as object: %s\n", result.getObject());}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+
+		//try all the cast gets
+		try{
+			System.out.printf(
+				"result as boolean: %b\n",
+				adapter.getBoolean( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as double: %f\n",
+				adapter.getDouble( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as float: %g\n",
+				adapter.getFloat( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as integer: %d\n",
+				adapter.getInteger( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as long: %d\n",
+				adapter.getLong( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as string: %s\n",
+				adapter.getString( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as json object: %s\n",
+				adapter.getJSONObject( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as json array: %s\n",
+				adapter.getJSONArray( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}
+		try{
+			System.out.printf(
+				"result as object: %s\n",
+				adapter.getObject( request));}
+		catch( ClassCastException exception){
+			System.out.println( exception.getMessage());}}
 }

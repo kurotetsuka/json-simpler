@@ -9,52 +9,72 @@ import org.json.simple.parser.*;
 
 public class TestJSONAdapter {
 	public static void main( String[] args){
-		String data1 = "{ \"asdf\":[ 0, 1, 2, { \"fdsa\":\"hello\"}]}";
-		String data2 = null;
-		String data3 = "[0, 1, 2]";
-		String request1 = ".asdf[3].fdsa";
-		String request2 = "..";
-		String request3 = ".";
-		String request4 = "[0]";
-		String request5 = "";
-
-		System.out.println( "Test 1");
-		test( data1, request1);
 		System.out.println();
+		//datum
+		String data0 = "{ \"asdf\":[ 0, 1, 2, { \"fdsa\":\"hello\"}]}";
+		String data1 = null;
+		String data2 = "[0, 1, 2]";
+		//requests
+		String request0 = ".asdf[3].fdsa";
+		String request1 = "..";
+		String request2 = ".";
+		String request3 = "[0]";
+		String request4 = "";
+		//expected
+		Object expected00 = null;
+		Object expected01 = null;
+		Object expected02 = null;
+		Object expected03 = null;
+		Object expected04 = null;
+		Object expected10 = null;
+		Object expected11 = null;
+		Object expected12 = null;
+		Object expected13 = null;
+		Object expected14 = null;
+		Object expected20 = null;
+		Object expected21 = null;
+		Object expected22 = null;
+		Object expected23 = null;
+		Object expected24 = null;
+		//arrays
+		String[] datum = new String[]{
+			data0, data1, data2};
+		String[] requests = new String[]{
+			request0, request1, request2, request3, request4};
+		Object[][] expected = {
+			{ expected00, expected01, expected02, expected03, expected04},
+			{ expected10, expected11, expected12, expected13, expected14},
+			{ expected20, expected21, expected22, expected23, expected24}};
 
-		System.out.println( "Test 2");
-		test( data1, request2);
-		System.out.println();
+		//do the actual tests
+		for( int datum_i = 0; datum_i < datum.length; datum_i ++)
+			for( int requests_i = 0; requests_i < requests.length; requests_i ++)
+				try{
+					test(
+						datum[ datum_i], requests[ requests_i],
+						expected[ datum_i][ requests_i],
+						datum_i, requests_i);}
+				catch( Exception exception){
+					exception.printStackTrace();}
 
-		System.out.println( "Test 3");
-		test( data1, request3);
-		System.out.println();
 
-		System.out.println( "Test 4");
-		boolean pass4 = false;
+		/*boolean pass4 = false;
 		try{
 			test( data1, null);}
 		catch( NullPointerException exception){
-			pass4 = true;
-			System.out.println("Pass - null pointer exception recieved");}
+			pass4 = true;}
 		catch( Exception exception){
 			exception.printStackTrace();}
-		System.out.println();
+		if( ! pass4)
+			System.out.println("[Fail] Null pointer exception not recieved");
+		System.out.println();*/
 
-		System.out.println( "Test 5");
-		boolean pass5 = false;
-		System.out.println( new JSONAdapter( null));
-		System.out.println();
+		//done
+		System.out.println( "Done all tests.");}
 
-		System.out.println( "Test 6");
-		test( data3, request4);
-		System.out.println();
-
-		System.out.println( "Test 7");
-		test( data1, request5);
-		System.out.println();}
-
-	public static void test( String data, String request){
+	public static Object test(
+			String data, String request, Object expected,
+			int datum_i, int request_i){
 		//load root object
 		Object root = null;
 		try {
@@ -66,113 +86,167 @@ public class TestJSONAdapter {
 		JSONAdapter adapter = new JSONAdapter( root);
 
 		//get request
-		System.out.printf( "data: %s\n", data);
-		System.out.printf( "request: %s\n", request);
+		System.out.printf( "data [%d] : %s\n", datum_i, data);
+		System.out.printf( "request [%d] : %s\n", request_i, request);
 		JSONAdapter result = adapter.get( request);
+		Object result_object = result.getObject();
+		Class result_class = result_object.getClass();
+		String result_string = result.toString();
 		System.out.printf( "result: (%s) %s\n",
-			result.getObject().getClass().getName(),
-			result);
+			result_class.getName(), result);
 
 		//try all the casts
-		try{
-			System.out.printf(
-				"result as boolean: %b\n", result.getBoolean());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as double: %f\n", result.getDouble());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as float: %g\n", result.getFloat());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as integer: %d\n", result.getInteger());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as long: %d\n", result.getLong());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as string: %s\n", result.getString());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as json object: %s\n", result.getJSONObject());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as json array: %s\n", result.getJSONArray());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as object: %s\n", result.getObject());}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
+		//boolean cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				boolean result_boolean = result.getBoolean();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				boolean result_boolean = adapter.getBoolean( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Boolean.class,
+				cast_success,  castGet_success);}
+		//number cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				Number result_number = result.getNumber();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				Number result_number = adapter.getNumber( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Number.class,
+				cast_success,  castGet_success);}
+		//double cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				double result_double = result.getDouble();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				double result_double = adapter.getDouble( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Double.class,
+				cast_success,  castGet_success);}
+		//float cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				float result_float = result.getFloat();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				float result_float = adapter.getFloat( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Float.class,
+				cast_success,  castGet_success);}
+		//integer cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				int result_int = result.getInteger();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				int result_int = adapter.getInteger( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Integer.class,
+				cast_success,  castGet_success);}
+		//long cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				long result_long = result.getLong();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				long result_long = adapter.getLong( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, Long.class,
+				cast_success,  castGet_success);}
+		//string cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				String result_String = result.getString();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				String result_String = adapter.getString( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, String.class,
+				cast_success,  castGet_success);}
+		//json array cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				JSONArray result_jsonArray = result.getJSONArray();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				JSONArray result_jsonArray = adapter.getJSONArray( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, JSONArray.class,
+				cast_success,  castGet_success);}
+		//json object cast
+		{
+			boolean cast_success = false;
+			boolean castGet_success = false;
+			try{
+				JSONObject result_jsonObject = result.getJSONObject();
+				cast_success = true;}
+			catch( ClassCastException exception){}
+			try{
+				JSONObject result_jsonObject = adapter.getJSONObject( request);
+				castGet_success = true;}
+			catch( ClassCastException exception){}
+			failMessage( result_string, result_class, JSONObject.class,
+				cast_success,  castGet_success);}
 
-		//try all the cast gets
-		try{
+		//done
+		System.out.println();
+		return result_object;}
+
+	private static void failMessage(
+			String result_string, Class result_class, Class cast_class,
+			boolean cast_success, boolean castGet_success){
+		boolean class_match = cast_class.isAssignableFrom( result_class);
+		//check the cast
+		if( class_match ^ cast_success)
 			System.out.printf(
-				"result as boolean: %b\n",
-				adapter.getBoolean( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
+				"[Fail] Cast of %s to %s %s\n",
+				result_string, cast_class.getName(),
+				//determine fail type
+				cast_success ?
+					"succeeded when it should have failed." :
+					"failed when it should have succeeded.");
+		//check the cast get
+		if( class_match ^ castGet_success)
 			System.out.printf(
-				"result as double: %f\n",
-				adapter.getDouble( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as float: %g\n",
-				adapter.getFloat( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as integer: %d\n",
-				adapter.getInteger( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as long: %d\n",
-				adapter.getLong( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as string: %s\n",
-				adapter.getString( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as json object: %s\n",
-				adapter.getJSONObject( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as json array: %s\n",
-				adapter.getJSONArray( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}
-		try{
-			System.out.printf(
-				"result as object: %s\n",
-				adapter.getObject( request));}
-		catch( ClassCastException exception){
-			System.out.println( exception.getMessage());}}
+				"[Fail] Cast get of %s to %s %s\n",
+				result_string, cast_class.getName(),
+				//determine fail type
+				castGet_success ?
+					"succeeded when it should have failed." :
+					"failed when it should have succeeded.");}
 }

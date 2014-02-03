@@ -13,11 +13,12 @@ public class JSONAdapter {
 	//constructors
 	public JSONAdapter( Object object){
 		if( ( object == null) ||
-				( object instanceof JSONObject) || 
-				( object instanceof JSONArray) || 
-				( object instanceof String) || 
-				( object instanceof Number) || 
-				( object instanceof Boolean))
+				( object instanceof JSONArray) ||
+				( object instanceof JSONObject) ||
+				( object instanceof Boolean) ||
+				( object instanceof Double) ||
+				( object instanceof Long) ||
+				( object instanceof String))
 			root = object;
 		else throw new ClassCastException(
 			"JSONAdapter passed an object that was not a json-simple type.");}
@@ -94,6 +95,14 @@ public class JSONAdapter {
 				"%s cannot be cast to %s",
 				root.getClass().getName(),
 				Boolean.class.getName()));}
+	public Number getNumber(){
+		if( isNumber())
+			return (Number) root;
+		else throw new ClassCastException(
+			String.format(
+				"%s cannot be cast to %s",
+				root.getClass().getName(),
+				Number.class.getName()));}
 	public double getDouble(){
 		if( isDecimal())
 			return ( (Double) root).doubleValue();
@@ -154,31 +163,34 @@ public class JSONAdapter {
 		return root;}
 
 	public boolean getBoolean( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getBoolean();}
+	public Number getNumber( String tag){
+		JSONAdapter adapter = this.get( tag);
+		return adapter.getNumber();}
 	public double getDouble( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getDouble();}
 	public float getFloat( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getFloat();}
 	public int getInteger( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getInteger();}
 	public long getLong( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getLong();}
 	public String getString( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getString();}
 	public JSONArray getJSONArray( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getJSONArray();}
 	public JSONObject getJSONObject( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getJSONObject();}
 	public Object getObject( String tag){
-		JSONAdapter adapter = get( tag);
+		JSONAdapter adapter = this.get( tag);
 		return adapter.getObject();}
 
 	//utility methods

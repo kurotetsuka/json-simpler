@@ -305,10 +305,10 @@ public class TestJSONAdapter {
 		return result_object;}
 
 	private static void failMessage(
-			String result_string, Class result_class, Class cast_class,
+			String result_string, Class<?> result_class, Class<?> cast_class,
 			boolean cast_success, boolean castGet_success){
 		boolean class_match =
-			result_class != null ?
+			result_class != null && cast_class != null ?
 				cast_class.isAssignableFrom( result_class) :
 				false;
 		//check the cast

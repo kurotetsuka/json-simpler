@@ -9,9 +9,9 @@ clean-specials:
 #variables
 cp = -cp src:bin:lib/*
 dest = -d bin
-jar_file = jar/json-simpler.jar
-version = 
-warnings = 
+version = 1.0.0b1
+jar_file = jar/json-simpler-$(version).jar
+warnings = -Xlint:unchecked
 #warnings = -Xlint:deprecation
 
 #includes
@@ -20,7 +20,7 @@ include dependencies.mk
 
 #compilation definitions
 $(class_files): bin/%.class : src/%.java
-	javac $(cp) $(dest) $(version) $(warnings) $<
+	javac $(cp) $(dest) $(warnings) $<
 
 #commands
 build: $(class_files)

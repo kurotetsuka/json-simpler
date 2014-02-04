@@ -30,24 +30,35 @@ public class JSONAdapter {
 			throw new NullPointerException();
 		//setup
 		Vector<Token> tokens = getTokens( tag);
-		if( tokens == null ) return null;
+		if( tokens == null ){
+			System.out.println("Wtf?!");
+			return null;}
+		if( tokens.size() == 0)
+			return this;
 		Object object = root;
 
 		//for each token
 		for( Token token : tokens){
 			//try a json object cast
 			if( object instanceof JSONObject){
-				if( ! token.symbol) return null;
+				if( ! token.symbol)
+					throw new java.util.NoSuchElementException(
+						String.format(
+							"Could not find element %s in object %s", tag, this));
 				JSONObject current = (JSONObject) object;
 				object = current.get( token.name);}
 			//try a json array cast
 			else if( object instanceof JSONArray){
-				if( token.symbol) return null;
+				if( token.symbol)
+					throw new java.util.NoSuchElementException(
+						String.format(
+							"Could not find element %s in object %s", tag, this));
 				JSONArray current = (JSONArray) object;
 				object = current.get( token.index);}
 			//we cant go any deeper, something's gone wrong
 			else throw new java.util.NoSuchElementException(
-				String.format( "Could not find element %s", tag));}
+				String.format(
+					"Could not find element %s in object %s", tag, this));}
 		//we're done, return
 		return new JSONAdapter( object);}
 
@@ -91,73 +102,64 @@ public class JSONAdapter {
 		if( isBoolean())
 			return ( (Boolean) root).booleanValue();
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Boolean.class.getName()));}
 	public Number getNumber(){
 		if( isNumber())
 			return (Number) root;
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Number.class.getName()));}
 	public double getDouble(){
 		if( isDecimal())
 			return ( (Double) root).doubleValue();
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Double.class.getName()));}
 	public float getFloat(){
 		if( isDecimal())
 			return ( (Float) root).floatValue();
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Float.class.getName()));}
 	public int getInteger(){
 		if( isInteger())
 			return ( (Integer) root).intValue();
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Integer.class.getName()));}
 	public long getLong(){
 		if( isInteger())
 			return ( (Long) root).longValue();
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				Long.class.getName()));}
 	public String getString(){
 		if( isString())
 			return (String) root;
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				String.class.getName()));}
 	public JSONArray getJSONArray(){
 		if( isJSONArray())
 			return (JSONArray) root;
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				JSONArray.class.getName()));}
 	public JSONObject getJSONObject(){
 		if( isJSONObject())
 			return (JSONObject) root;
 		else throw new ClassCastException(
-			String.format(
-				"%s cannot be cast to %s",
-				root.getClass().getName(),
+			String.format( "%s cannot be cast to %s",
+				root == null ? "null" : root.getClass().getName(),
 				JSONObject.class.getName()));}
 	public Object getObject(){
 		return root;}

@@ -1,6 +1,6 @@
 json-simpler
 ============
-An extension of the json-simple library
+An extension to the json-simple library
 ---------------------------------------
 
 By: Kalev Kalda Sikes  
@@ -8,7 +8,7 @@ By: Kalev Kalda Sikes
 
 This java library is released under the MIT license. See [license.txt](license.txt) for the details. If I understand it correctly, this just means you can do whatever you want with it :).
 
-This code uses some libraries. These libraries should be in the lib/ folder.
+This code uses some libraries. To compile,these libraries should be in the lib/ folder.
  * json-simple : [code.google.com/p/json-simple](http://code.google.com/p/json-simple/)
 
 Your lib folder should look somewhat like this:

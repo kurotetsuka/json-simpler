@@ -24,7 +24,7 @@ public class TestJSONAdapter {
 		String request2 = ".";
 		String request3 = "[0]";
 		String request4 = "";
-		String request5 = ".a..d";
+		String request5 = "a..d";
 		String request6 = null;
 		//expected
 		Object expected00 = null;

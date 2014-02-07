@@ -3,8 +3,10 @@ default: build
 freshen: clean build
 clean: clean-specials
 	rm -rf bin/*
+	rm -rf export/*
+	rm -rf jar/*
 clean-specials:
-	rm -rf $(jar_file)
+	rm -rf javadoc
 
 #variables
 cp = -cp src:bin:lib/*
@@ -13,6 +15,7 @@ docscp = -classpath src:bin:lib/*
 documentation = -d javadoc
 version = 1.0.0b6
 jar_file = jar/json-simpler-$(version).jar
+export_file = export/json-simpler-$(version).zip
 options = -g:vars
 warnings =
 #warnings = -Xlint:deprecation
@@ -43,6 +46,11 @@ javadoc: $(source_files)
 docs: javadoc
 docs-test: docs
 	chromium-browser javadoc/index.html
+
+export: build jar docs
+	zip -r $(export_file) javadoc $(jar_file) readme.md license.txt
+export-test: export
+	file-roller $(export_file)
 
 #other commands
 git-prepare:

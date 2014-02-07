@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 //json-simple imports
@@ -23,8 +24,9 @@ public class Tutorial {
 		//first load your data
 		String data = new String();
 		try {
-			BufferedReader reader = new BufferedReader(
-				new FileReader( file));
+			BufferedReader reader =
+				new BufferedReader(
+					new FileReader( file));
 			while( reader.ready())
 				data += reader.readLine() + '\n';
 			reader.close();}

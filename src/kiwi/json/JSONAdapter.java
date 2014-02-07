@@ -24,11 +24,25 @@ public class JSONAdapter {
 			"JSONAdapter passed an object that was not a json-simple type.");}
 
 	//main get function
+	public JSONAdapter get( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter;}
 	public JSONAdapter get( String tag){
 		//validation
 		if( tag == null)
-			throw new NullPointerException();
+			return this;
 		//setup
+		String request;
+		if( tag.length() > 0)
+			//preppend a '.', if they probably wanted one
+			if( tag.charAt( 0) != '.' ||
+					tag.charAt( 0) != '[')
+				request = '.' + tag;
+			else request = tag;
+		else
+			//they sent an empty string?!
+			return this;
 		Vector<Token> tokens = getTokens( tag);
 		if( tokens == null ){
 			System.out.println("Wtf?!");
@@ -121,14 +135,14 @@ public class JSONAdapter {
 				Double.class.getName()));}
 	public float getFloat(){
 		if( isDecimal())
-			return ( (Float) root).floatValue();
+			return ( (Double) root).floatValue();
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Float.class.getName()));}
 	public int getInteger(){
 		if( isInteger())
-			return ( (Integer) root).intValue();
+			return ( (Long) root).intValue();
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
@@ -193,6 +207,47 @@ public class JSONAdapter {
 		return adapter.getJSONObject();}
 	public Object getObject( String tag){
 		JSONAdapter adapter = this.get( tag);
+		return adapter.getObject();}
+
+	public boolean getBoolean( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getBoolean();}
+	public Number getNumber( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getNumber();}
+	public double getDouble( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getDouble();}
+	public float getFloat( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getFloat();}
+	public int getInteger( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getInteger();}
+	public long getLong( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getLong();}
+	public String getString( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getString();}
+	public JSONArray getJSONArray( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getJSONArray();}
+	public JSONObject getJSONObject( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
+		return adapter.getJSONObject();}
+	public Object getObject( int index){
+		JSONAdapter adapter = this.get(
+			String.format( "[%d]", index));
 		return adapter.getObject();}
 
 	//utility methods

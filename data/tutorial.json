@@ -1,0 +1,14 @@
+{
+	"name": "Henry",
+	"age": 21,
+	"weight": {
+		"kilos": 72.2,
+		"pounds": 158.84},
+	"birthday": [
+		1992, 04, 24],
+	"deathday": [
+		2013, 12, 31],
+	"likes-cake": true,
+	"friends":[
+		"Julie", "Catherine", "John", "Mark"],
+	"girlfriend": null}

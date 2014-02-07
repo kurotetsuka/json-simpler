@@ -15,14 +15,17 @@ public class TestJSONAdapter {
 		System.out.println();
 		//datum
 		String data0 = "{ \"asdf\":[ 0, 1, 2, { \"fdsa\":\"hello\"}]}";
-		String data1 = null;
-		String data2 = "[0, 1, 2]";
+		String data1 = "[0, 1, 2]";
+		String data2 = "{ \"a.d\":10}";
+		String data3 = null;
 		//requests
 		String request0 = ".asdf[3].fdsa";
 		String request1 = "..";
 		String request2 = ".";
 		String request3 = "[0]";
 		String request4 = "";
+		String request5 = ".a..d";
+		String request6 = null;
 		//expected
 		Object expected00 = null;
 		Object expected01 = null;
@@ -41,9 +44,10 @@ public class TestJSONAdapter {
 		Object expected24 = null;
 		//arrays
 		String[] datum = new String[]{
-			data0, data1, data2};
+			data0, data1, data2, data3};
 		String[] requests = new String[]{
-			request0, request1, request2, request3, request4};
+			request0, request1, request2, request3, request4, request5,
+			request6};
 		Object[][] expected = {
 			{ expected00, expected01, expected02, expected03, expected04},
 			{ expected10, expected11, expected12, expected13, expected14},
@@ -55,28 +59,16 @@ public class TestJSONAdapter {
 				try{
 					test(
 						datum[ datum_i], requests[ requests_i],
-						expected[ datum_i][ requests_i],
+						//expected[ datum_i][ requests_i],
 						datum_i, requests_i);}
 				catch( Exception exception){
 					exception.printStackTrace();}
-
-
-		/*boolean pass4 = false;
-		try{
-			test( data1, null);}
-		catch( NullPointerException exception){
-			pass4 = true;}
-		catch( Exception exception){
-			exception.printStackTrace();}
-		if( ! pass4)
-			System.out.println("[Fail] Null pointer exception not recieved");
-		System.out.println();*/
 
 		//done
 		System.out.println( "Done all tests.");}
 
 	public static Object test(
-			String data, String request, Object expected,
+			String data, String request,
 			int datum_i, int request_i){
 		//load root object
 		Object root = null;

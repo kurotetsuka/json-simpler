@@ -9,9 +9,9 @@ clean-specials:
 #variables
 cp = -cp src:bin:lib/*
 dest = -d bin
-version = 1.0.0b1
+version = 1.0.0b2
 jar_file = jar/json-simpler-$(version).jar
-warnings = -Xlint:unchecked
+warnings =
 #warnings = -Xlint:deprecation
 
 #includes
@@ -31,7 +31,7 @@ jar: $(jar_file)
 jar-test: jar
 	java -jar $(jar_file)
 $(jar_file): build manifest.mf
-	rm -rf $(jar_file)
+	rm -rf jar/*
 	jar cmf manifest.mf $@ -C bin kiwi
 
 #other commands
@@ -40,7 +40,10 @@ git-prepare:
 	git add -u
 
 #test commands
-test: test-jsonadapter
+test: test-tutorial
 
 test-jsonadapter: bin/kiwi/json/test/TestJSONAdapter.class
 	java $(cp) kiwi.json.test.TestJSONAdapter
+
+test-tutorial: bin/kiwi/json/tutorial/Tutorial.class
+	java $(cp) kiwi.json.tutorial.Tutorial

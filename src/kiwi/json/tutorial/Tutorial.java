@@ -45,27 +45,49 @@ public class Tutorial {
 		JSONAdapter adapter = new JSONAdapter( root);
 
 		//now you can easily read your data!
-		String name = adapter.getString( ".name");
-		int age = adapter.getInteger( ".age");
-		boolean likesCake = adapter.getBoolean( ".likes-cake");
+		String name = adapter.getString( "name");
+		int age = adapter.getInteger( "age");
+		boolean likesCake = adapter.getBoolean( "likes-cake");
 
 		//you can use dot-dereferencing notation to get sub-objects
-		float weight_kilos = adapter.getFloat( ".weight.kilos");
+		float weight_kilos = adapter.getFloat( "weight.kilos");
 		//alternative you can get adapters for sub-objects
-		JSONAdapter weight_adapter = adapter.get( ".weight");
-		double weight_pounds = weight_adapter.getDouble( ".pounds");
+		JSONAdapter weight_adapter = adapter.get( "weight");
+		double weight_pounds = weight_adapter.getDouble( "pounds");
 
 		//you can use array indexing notation to get array elements
 		Date birthday = new Date(
-			adapter.getInteger( ".birthday[0]"),
-			adapter.getInteger( ".birthday[1]"),
-			adapter.getInteger( ".birthday[2]"));
+			adapter.getInteger( "birthday[0]") - 1900,
+			adapter.getInteger( "birthday[1]"),
+			adapter.getInteger( "birthday[2]"));
 		//just like with sub-objects, you can get adapters for arrays
-		JSONAdapter deathday_adapter = adapter.get( ".deathday");
+		JSONAdapter deathday_adapter = adapter.get( "deathday");
 		//then use integers for gets
 		Date deathday = new Date(
-			deathday_adapter.getInteger( 0),
+			deathday_adapter.getInteger( 0) - 1900,
 			deathday_adapter.getInteger( 1),
-			deathday_adapter.getInteger( 2));}
+			deathday_adapter.getInteger( 2));
 
+		//If you want you can get objects and cast it yourself
+		JSONArray friends = adapter.getJSONArray( "friends");
+		Object friend_object = friends.get( 0);
+		String friend = null;
+		if( friend_object instanceof String)
+			friend = (String) friend_object;
+
+		//there's also null checks, of course
+		boolean hasGirlfriend = adapter.isNull( "girlfriend");
+
+		//just to prove that everything worked
+		System.out.printf( "name: %s\n", name);
+		System.out.printf( "age: %d years\n", age);
+		System.out.printf( "likes cake: %s\n",
+			likesCake ? "definely man!" : "nope dude");
+		System.out.printf( "weight: %f kilos, %f pounds\n",
+			weight_kilos, weight_pounds);
+		System.out.printf( "birthday: %tF\n", birthday);
+		System.out.printf( "deathday: %tF\n", deathday);
+		System.out.printf( "friend: %s\n", name);
+		System.out.printf( "has girlfriend: %s\n",
+			hasGirlfriend ? "negative" : "affirmative");}
 }

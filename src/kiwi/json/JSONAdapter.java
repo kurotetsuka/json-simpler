@@ -38,7 +38,7 @@ public class JSONAdapter {
 		String request;
 		if( tag.length() > 0)
 			//preppend a '.', if they probably wanted one
-			if( tag.charAt( 0) != '.' ||
+			if( tag.charAt( 0) != '.' &&
 					tag.charAt( 0) != '[')
 				request = '.' + tag;
 			else request = tag;
@@ -57,33 +57,36 @@ public class JSONAdapter {
 		for( Token token : tokens){
 			//try a json object cast
 			if( object instanceof JSONObject){
+				//check that this step in the request is dereferencing an object
 				if( ! token.symbol)
-					throw new NoSuchElementException(
-						String.format(
-							"Could not find element %s in object %s", tag, this));
+					throw new NoSuchElementException( String.format(
+						"Could not find element %s in object %s", tag, this));
+				//cast the current object
 				JSONObject current = (JSONObject) object;
+				//check object contains key
 				if( ! current.containsKey( token.name))
-					throw new NoSuchElementException(
-						String.format(
-							"Could not find element %s in object %s", tag, this));
+					throw new NoSuchElementException( String.format(
+						"Could not find element %s in object %s", tag, this));
+				//get key
 				object = current.get( token.name);}
 			//try a json array cast
 			else if( object instanceof JSONArray){
+				//check that this step in the request is indexing an array
 				if( token.symbol)
-					throw new NoSuchElementException(
-						String.format(
-							"Could not find element %s in object %s", tag, this));
+					throw new NoSuchElementException( String.format(
+						"Could not find element %s in object %s", tag, this));
+				//cast the current object
 				JSONArray current = (JSONArray) object;
+				//get indexed object
 				try {
 					object = current.get( token.index);}
+				//catch invalid index
 				catch( IndexOutOfBoundsException exception){
-					throw new NoSuchElementException(
-						String.format(
-							"Could not find element %s in object %s", tag, this));}}
+					throw new NoSuchElementException( String.format(
+						"Could not find element %s in object %s", tag, this));}}
 			//we cant go any deeper, something's gone wrong
-			else throw new NoSuchElementException(
-				String.format(
-					"Could not find element %s in object %s", tag, this));}
+			else throw new NoSuchElementException( String.format(
+				"Could not find element %s in object %s", tag, this));}
 		//we're done, return
 		return new JSONAdapter( object);}
 
@@ -349,5 +352,9 @@ public class JSONAdapter {
 			this.symbol = false;
 			this.name = null;
 			this.index = index;}
+
+		public String toString(){
+			return symbol ? name :
+				String.valueOf( index);}
 	}
 }

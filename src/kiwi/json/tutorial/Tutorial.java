@@ -82,7 +82,7 @@ public class Tutorial {
 
 		//no such element exceptions are thrown when the indicated element cannot be found
 		try{
-			adapter.get( "pet");
+			adapter.get( "friends[10]");
 			System.out.println( "This line won't print");}
 		catch( NoSuchElementException exception){}
 

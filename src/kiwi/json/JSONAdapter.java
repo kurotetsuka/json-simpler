@@ -62,6 +62,10 @@ public class JSONAdapter {
 						String.format(
 							"Could not find element %s in object %s", tag, this));
 				JSONObject current = (JSONObject) object;
+				if( ! current.containsKey( token.name))
+					throw new NoSuchElementException(
+						String.format(
+							"Could not find element %s in object %s", tag, this));
 				object = current.get( token.name);}
 			//try a json array cast
 			else if( object instanceof JSONArray){
@@ -70,7 +74,12 @@ public class JSONAdapter {
 						String.format(
 							"Could not find element %s in object %s", tag, this));
 				JSONArray current = (JSONArray) object;
-				object = current.get( token.index);}
+				try {
+					object = current.get( token.index);}
+				catch( IndexOutOfBoundsException exception){
+					throw new NoSuchElementException(
+						String.format(
+							"Could not find element %s in object %s", tag, this));}}
 			//we cant go any deeper, something's gone wrong
 			else throw new NoSuchElementException(
 				String.format(

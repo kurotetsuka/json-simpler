@@ -78,6 +78,18 @@ public class Tutorial {
 		//there's also null checks, of course
 		boolean hasGirlfriend = adapter.isNull( "girlfriend");
 
+		//no such element exceptions are thrown when the indicated element cannot be found
+		try{
+			adapter.get( "pet");
+			System.out.println( "This line won't print");}
+		catch( NoSuchElementException exception){}
+
+		//class cast exceptions are thrown when the element is found, but is of the wrong type
+		try{
+			adapter.getInteger( "name");
+			System.out.println( "This line won't print");}
+		catch( ClassCastException exception){}
+
 		//just to prove that everything worked
 		System.out.printf( "name: %s\n", name);
 		System.out.printf( "age: %d years\n", age);

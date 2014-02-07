@@ -9,6 +9,8 @@ clean-specials:
 #variables
 cp = -cp src:bin:lib/*
 dest = -d bin
+docscp = -classpath src:bin:lib/*
+documentation = -d javadoc
 version = 1.0.0b2
 jar_file = jar/json-simpler-$(version).jar
 warnings =
@@ -33,6 +35,13 @@ jar-test: jar
 $(jar_file): build manifest.mf
 	rm -rf jar/*
 	jar cmf manifest.mf $@ -C bin kiwi
+
+javadoc: $(source_files)
+	rm -rf javadoc
+	javadoc $(docscp) $(documentation) $(source_files)
+docs: javadoc
+docs-test: docs
+	chromium-browser javadoc/index.html
 
 #other commands
 git-prepare:

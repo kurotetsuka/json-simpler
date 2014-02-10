@@ -16,7 +16,7 @@ documentation = -d javadoc
 version = 1.0.0b6
 jar_file = jar/json-simpler-$(version).jar
 export_file = export/json-simpler-$(version).zip
-options = -g:vars
+options =
 warnings =
 #warnings = -Xlint:deprecation
 
@@ -26,7 +26,7 @@ include dependencies.mk
 
 #compilation definitions
 $(class_files): bin/%.class : src/%.java
-	javac $(cp) $(options) $(dest) $(warnings) $<
+	javac $(cp) $(dest) $(warnings) $<
 
 #commands
 build: $(class_files)

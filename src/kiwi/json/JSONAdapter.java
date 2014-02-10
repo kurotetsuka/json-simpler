@@ -10,6 +10,7 @@ import org.json.simple.*;
 public class JSONAdapter {
 	//private fields
 	private Object root;
+	private static final boolean debug = false;
 
 	//constructors
 	public JSONAdapter( Object object){
@@ -29,12 +30,15 @@ public class JSONAdapter {
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
 				"Root is not an array");
-	return new JSONAdapter(((JSONArray) root).get( index));}
+		return new JSONAdapter(((JSONArray) root).get( index));}
 	public JSONAdapter get( String tag){
 		//validation
 		if( tag == null)
+			//this is not an error, this is indended behavior.
 			return this;
+
 		//setup
+		//figure out request
 		String request;
 		if( tag.length() > 0)
 			//preppend a '.', if they probably wanted one
@@ -45,16 +49,29 @@ public class JSONAdapter {
 		else
 			//they sent an empty string?!
 			return this;
+		//debug print statement
+		if( debug)
+			System.out.printf( "request: [%s]\n", request);
+
+		//get tokens
 		Vector<Token> tokens = getTokens( request);
+		//getTokens should never return null
 		if( tokens == null )
 			throw new NullPointerException(
 				"getTokens() returned null?! Wtf?!");
 		if( tokens.size() == 0)
 			return this;
-		Object object = root;
 
+		//start at root of the tree
+		Object object = root;
 		//for each token
 		for( Token token : tokens){
+			//debug print statement
+			if( debug)
+				System.out.printf( "token: [%b, %s]\n",
+					token.symbol, token.symbol ? token.name :
+						String.valueOf( token.index));
+
 			//try a json object cast
 			if( object instanceof JSONObject){
 				//check that this step in the request is dereferencing an object
@@ -69,6 +86,7 @@ public class JSONAdapter {
 						"Could not find element %s in object %s", tag, this));
 				//get key
 				object = current.get( token.name);}
+
 			//try a json array cast
 			else if( object instanceof JSONArray){
 				//check that this step in the request is indexing an array
@@ -84,6 +102,8 @@ public class JSONAdapter {
 				catch( IndexOutOfBoundsException exception){
 					throw new NoSuchElementException( String.format(
 						"Could not find element %s in object %s", tag, this));}}
+
+			//all possible casts failed
 			//we cant go any deeper, something's gone wrong
 			else throw new NoSuchElementException( String.format(
 				"Could not find element %s in object %s", tag, this));}

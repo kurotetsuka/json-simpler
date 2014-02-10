@@ -78,7 +78,7 @@ public class Tutorial {
 			friend = (String) friend_object;
 
 		//there's also null checks, of course
-		boolean hasGirlfriend = adapter.isNull( "girlfriend");
+		boolean hasGirlfriend = ! adapter.isNull( "girlfriend");
 
 		//no such element exceptions are thrown when the indicated element cannot be found
 		try{
@@ -101,7 +101,7 @@ public class Tutorial {
 			weight_kilos, weight_pounds);
 		System.out.printf( "birthday: %tF\n", birthday);
 		System.out.printf( "deathday: %tF\n", deathday);
-		System.out.printf( "friend: %s\n", name);
+		System.out.printf( "friend: %s\n", friend);
 		System.out.printf( "has girlfriend: %s\n",
-			hasGirlfriend ? "negative" : "affirmative");}
+			hasGirlfriend ? "affirmative" : "negative");}
 }

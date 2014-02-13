@@ -77,13 +77,13 @@ public class JSONAdapter {
 				//check that this step in the request is dereferencing an object
 				if( ! token.symbol)
 					throw new NoSuchElementException( String.format(
-						"Could not find element %s in object %s", tag, this));
+						"Could not find element %s in %d", token.index, object));
 				//cast the current object
 				JSONObject current = (JSONObject) object;
 				//check object contains key
 				if( ! current.containsKey( token.name))
 					throw new NoSuchElementException( String.format(
-						"Could not find element %s in object %s", tag, this));
+						"Could not find element %s in %s", token.name, object));
 				//get key
 				object = current.get( token.name);}
 
@@ -92,7 +92,7 @@ public class JSONAdapter {
 				//check that this step in the request is indexing an array
 				if( token.symbol)
 					throw new NoSuchElementException( String.format(
-						"Could not find element %s in object %s", tag, this));
+						"Could not find element %s in %s", token.name, object));
 				//cast the current object
 				JSONArray current = (JSONArray) object;
 				//get indexed object
@@ -101,12 +101,15 @@ public class JSONAdapter {
 				//catch invalid index
 				catch( IndexOutOfBoundsException exception){
 					throw new NoSuchElementException( String.format(
-						"Could not find element %s in object %s", tag, this));}}
+						"Could not find element %s in %d", token.index, object));}}
 
 			//all possible casts failed
 			//we cant go any deeper, something's gone wrong
 			else throw new NoSuchElementException( String.format(
-				"Could not find element %s in object %s", tag, this));}
+				"Could not find element %s in %s", tag, object));
+
+			if( debug)
+				System.out.printf( "result: [%s]", object);}
 		//we're done, return
 		return new JSONAdapter( object);}
 
@@ -305,6 +308,7 @@ public class JSONAdapter {
 			Token token = null;
 			char first = content.charAt( 0);
 			String label = null;
+			int escapes = 0;
 			//find type.
 			switch( first){
 				case '.':{
@@ -319,6 +323,7 @@ public class JSONAdapter {
 							char next = content.charAt( i + 1);
 							if( next == '.' || next == '['){
 								label += next;
+								escapes++;
 								i++;}
 							//otherwise we're done parsing the label
 							else break;}
@@ -347,8 +352,7 @@ public class JSONAdapter {
 			if( token == null) break;
 			//remove token from substring
 			content = content.substring(
-				label.length() + ( token.symbol ? 1 : 2));
-			//System.out.printf( "%s : %s\n", label, content);
+				label.length() + ( token.symbol ? 1 : 2) + escapes);
 			tokens.add( token);}
 		return tokens;}
 
@@ -357,6 +361,16 @@ public class JSONAdapter {
 		return root == null ?
 			"null" :
 			root.toString();}
+
+	public int size(){
+		if( this.isJSONArray())
+			return ( (JSONArray) root).size();
+		if( this.isJSONObject())
+			return ( (JSONObject) root).size();
+		else
+			throw new ClassCastException(
+				String.format( "Cannot get the size of a %s",
+					root.getClass().getName()));}
 
 	//subclasses
 	public static class Token {

@@ -16,7 +16,7 @@ public class TestJSONAdapter {
 		//datum
 		String data0 = "{ \"asdf\":[ 0, 1, 2, { \"fdsa\":\"hello\"}]}";
 		String data1 = "[0, 1, 2]";
-		String data2 = "{ \"a.d\":10}";
+		String data2 = "{ \"a.d.s.3\":10}";
 		String data3 = null;
 		//requests
 		String request0 = ".asdf[3].fdsa";
@@ -24,7 +24,7 @@ public class TestJSONAdapter {
 		String request2 = ".";
 		String request3 = "[0]";
 		String request4 = "";
-		String request5 = "a..d";
+		String request5 = "a..d..s..3";
 		String request6 = null;
 		//expected
 		Object expected00 = null;
@@ -54,7 +54,7 @@ public class TestJSONAdapter {
 			{ expected20, expected21, expected22, expected23, expected24}};
 
 		//do the actual tests
-		for( int datum_i = 0; datum_i < datum.length; datum_i ++)
+		/*for( int datum_i = 0; datum_i < datum.length; datum_i ++)
 			for( int requests_i = 0; requests_i < requests.length; requests_i ++)
 				try{
 					test(
@@ -62,7 +62,11 @@ public class TestJSONAdapter {
 						//expected[ datum_i][ requests_i],
 						datum_i, requests_i);}
 				catch( Exception exception){
-					exception.printStackTrace();}
+					exception.printStackTrace();}*/
+
+		System.out.println();
+		for( JSONAdapter.Token token : JSONAdapter.getTokens(".female..focus..3"))
+			System.out.println( token);
 
 		//done
 		System.out.println( "Done all tests.");}

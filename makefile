@@ -32,12 +32,12 @@ build: $(class_files)
 
 run: test
 
-jar: $(jar_file)
-jar-test: jar
-	java -jar $(jar_file)
 $(jar_file): $(class_files) manifest.mf
 	rm -rf jar/*
 	jar cmf manifest.mf $@ -C bin kiwi
+jar: $(jar_file)
+jar-test: jar
+	java -jar $(jar_file)
 
 $(docs_path): $(source_files)
 	rm -rf $(docs_path)
@@ -49,7 +49,6 @@ docs-test: docs
 $(package_file): \
 		$(class_files) $(jar_file) $(docs_path) \
 		readme.md license.md
-	rm -f $(package_file)
 	tar -cf $(package_file) $(docs_path) $(jar_file) readme.md license.md
 package: $(package_file)
 package-test: package

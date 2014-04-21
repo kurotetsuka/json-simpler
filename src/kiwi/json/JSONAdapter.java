@@ -113,7 +113,8 @@ public class JSONAdapter {
 		//we're done, return
 		return new JSONAdapter( object);}
 
-	public Object set( int index){}
+	public Object set( int index){
+		return null;}
 	public Object set( String tag){
 		//validation
 		if( tag == null)
@@ -134,7 +135,8 @@ public class JSONAdapter {
 			return this;
 		//debug print statement
 		if( debug)
-			System.out.printf( "request: [%s]\n", request);}
+			System.out.printf( "request: [%s]\n", request);
+		return null;}
 
 	//validation functions
 	public boolean isBoolean(){

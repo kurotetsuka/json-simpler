@@ -1,21 +1,20 @@
 #globals
 default: build
 freshen: clean build
-clean: clean-specials
+clean:
+	rm -rf $(docs_path)
 	rm -rf bin/*
-	rm -rf export/*
+	rm -rf pkg/*
 	rm -rf jar/*
-clean-specials:
-	rm -rf javadoc
 
 #variables
-cp = -cp src:bin:lib/*
+version = 1.0.0
+cp = bin:lib/*
 dest = -d bin
-docscp = -classpath src:bin:lib/*
-documentation = -d javadoc
-version = 1.0.0b7
+docscp = lib/*
+docs_path = javadoc
 jar_file = jar/json-simpler-$(version).jar
-export_file = export/json-simpler-$(version).zip
+package_file = pkg/json-simpler-$(version).zip
 options =
 warnings =
 #warnings = -Xlint:deprecation
@@ -26,7 +25,7 @@ include dependencies.mk
 
 #compilation definitions
 $(class_files): bin/%.class : src/%.java
-	javac $(cp) $(dest) $(warnings) $<
+	javac -cp $(cp) $(dest) $(warnings) $<
 
 #commands
 build: $(class_files)
@@ -36,21 +35,25 @@ run: test
 jar: $(jar_file)
 jar-test: jar
 	java -jar $(jar_file)
-$(jar_file): build manifest.mf
+$(jar_file): $(class_files) manifest.mf
 	rm -rf jar/*
 	jar cmf manifest.mf $@ -C bin kiwi
 
-javadoc: $(source_files)
-	rm -rf javadoc
-	javadoc $(docscp) $(documentation) $(source_files)
-docs: javadoc
+$(docs_path): $(source_files)
+	rm -rf $(docs_path)
+	javadoc -classpath $(docscp) -d $(docs_path) $(source_files)
+docs: $(docs_path)
 docs-test: docs
 	chromium-browser javadoc/index.html
 
-export: build jar docs
-	zip -r $(export_file) javadoc $(jar_file) readme.md license.txt
-export-test: export
-	file-roller $(export_file)
+$(package_file): \
+		$(class_files) $(jar_file) $(docs_path) \
+		readme.md license.md
+	rm -f $(package_file)
+	zip -r $(package_file) $(docs_path) $(jar_file) readme.md license.md
+package: $(package_file)
+package-test: package
+	file-roller $(package_file)
 
 #other commands
 git-prepare:

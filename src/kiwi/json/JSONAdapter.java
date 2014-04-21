@@ -113,6 +113,29 @@ public class JSONAdapter {
 		//we're done, return
 		return new JSONAdapter( object);}
 
+	public Object set( int index){}
+	public Object set( String tag){
+		//validation
+		if( tag == null)
+			//this is not an error, this is indended behavior.
+			return this;
+
+		//setup
+		//figure out request
+		String request;
+		if( tag.length() > 0)
+			//preppend a '.', if they probably wanted one
+			if( tag.charAt( 0) != '.' &&
+					tag.charAt( 0) != '[')
+				request = '.' + tag;
+			else request = tag;
+		else
+			//they sent an empty string?!
+			return this;
+		//debug print statement
+		if( debug)
+			System.out.printf( "request: [%s]\n", request);}
+
 	//validation functions
 	public boolean isBoolean(){
 		return root instanceof Boolean;}

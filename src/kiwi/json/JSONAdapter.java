@@ -101,7 +101,7 @@ public class JSONAdapter {
 				//catch invalid index
 				catch( IndexOutOfBoundsException exception){
 					throw new NoSuchElementException( String.format(
-						"Could not find element %s in %d", token.index, object));}}
+						"Could not find index %d in %s", token.index, object));}}
 
 			//all possible casts failed
 			//we cant go any deeper, something's gone wrong

@@ -44,7 +44,7 @@ $(docs_path): $(source_files)
 	javadoc -classpath $(docscp) -d $(docs_path) $(source_files)
 docs: $(docs_path)
 docs-test: docs
-	chromium-browser javadoc/index.html
+	chromium javadoc/index.html
 
 $(package_file): \
 		$(class_files) $(jar_file) $(docs_path) \
@@ -64,7 +64,7 @@ git-prepare:
 test: test-tutorial
 
 test-jsonadapter: bin/kiwi/json/test/TestJSONAdapter.class
-	java $(cp) kiwi.json.test.TestJSONAdapter
+	java -cp $(cp) kiwi.json.test.TestJSONAdapter
 
 test-tutorial: bin/kiwi/json/tutorial/Tutorial.class
-	java $(cp) kiwi.json.tutorial.Tutorial
+	java -cp $(cp) kiwi.json.tutorial.Tutorial

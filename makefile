@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 1.0.0
+version = 1.0.1a1
 cp = bin:lib/*
 dest = -d bin
 docscp = lib/*

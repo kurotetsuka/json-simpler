@@ -14,7 +14,7 @@ dest = -d bin
 docscp = lib/*
 docs_path = javadoc
 jar_file = jar/json-simpler-$(version).jar
-package_file = pkg/json-simpler-$(version).zip
+package_file = pkg/json-simpler-$(version).tar.gz
 options =
 warnings =
 #warnings = -Xlint:deprecation
@@ -44,16 +44,16 @@ $(docs_path): $(source_files)
 	javadoc -classpath $(docscp) -d $(docs_path) $(source_files)
 docs: $(docs_path)
 docs-test: docs
-	chromium javadoc/index.html
+	chromium javadoc/index.html &
 
 $(package_file): \
 		$(class_files) $(jar_file) $(docs_path) \
 		readme.md license.md
 	rm -f $(package_file)
-	zip -r $(package_file) $(docs_path) $(jar_file) readme.md license.md
+	tar -cf $(package_file) $(docs_path) $(jar_file) readme.md license.md
 package: $(package_file)
 package-test: package
-	file-roller $(package_file)
+	file-roller $(package_file) &
 
 #other commands
 git-prepare:

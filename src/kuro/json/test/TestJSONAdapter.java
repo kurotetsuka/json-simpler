@@ -1,4 +1,4 @@
-package kiwi.json.test;
+package kuro.json.test;
 
 //standard libray imports
 import java.util.NoSuchElementException;
@@ -8,7 +8,7 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 //local imports
-import kiwi.json.*;
+import kuro.json.*;
 
 public class TestJSONAdapter {
 	public static void main( String[] args){

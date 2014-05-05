@@ -1,17 +1,17 @@
-## [json-simpler](http://kiwistrongis.github.io/json-simpler/) :: An extension to [json-simple](https://code.google.com/p/json-simple/) ##
+## [json-simpler](http://kurotetsuka.github.io/json-simpler/) :: An extension to [json-simple](https://code.google.com/p/json-simple/) ##
 
-By: Kalev Kalda Sikes  
-This library is released under the MIT license. See [license.md](license.md) for the details. If I understand it correctly, this just means you can do whatever you want with it :).
+By: kurotetsuka  
+This library is released under the GNU LGPL. See [license.md](license.md) for the details.
 
 -----------------------------------------------
 
-Github: [github.com/KiwiStrongis/json-simpler](https://github.com/KiwiStrongis/json-simpler/)  
-Drone: [drone.io/github.com/KiwiStrongis/json-simpler](https://drone.io/github.com/KiwiStrongis/json-simpler)  
-Site: [kiwistrongis.github.io/json-simpler](http://kiwistrongis.github.io/json-simpler/)  
-Javadoc: [kiwistrongis.github.io/json-simpler/doc](http://kiwistrongis.github.io/json-simpler/doc/)  
+Github: [github.com/kurotetsuka/json-simpler](https://github.com/kurotetsuka/json-simpler/)  
+Drone: [drone.io/github.com/kurotetsuka/json-simpler](https://drone.io/github.com/kurotetsuka/json-simpler)  
+Site: [kurotetsuka.github.io/json-simpler](http://kurotetsuka.github.io/json-simpler/)  
+Javadoc: [kurotetsuka.github.io/json-simpler/doc](http://kurotetsuka.github.io/json-simpler/doc/)  
 
-Latest Release: [1.0.0](https://github.com/KiwiStrongis/json-simpler/releases/tag/v1.0.0)  
-Latest Beta: [1.0.0b8](https://github.com/KiwiStrongis/json-simpler/releases/tag/v1.0.0b8)  
-Latest Alpha: [1.0.1a1](https://github.com/KiwiStrongis/json-simpler/releases/tag/v1.0.1a1)  
-Build Status: [![Build Status](https://drone.io/github.com/KiwiStrongis/json-simpler/status.png)](https://drone.io/github.com/KiwiStrongis/json-simpler/latest)
+Latest Release: [1.0.0](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.0)  
+Latest Beta: [1.0.0b8](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.0b8)  
+Latest Alpha: [1.0.1a1](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.1a1)  
+Build Status: [![Build Status](https://drone.io/github.com/kurotetsuka/json-simpler/status.png)](https://drone.io/github.com/kurotetsuka/json-simpler/latest)
 

@@ -1,4 +1,4 @@
-package kiwi.json.tutorial;
+package kuro.json.tutorial;
 
 //standard library imports
 import java.io.BufferedReader;
@@ -13,7 +13,7 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 //json-simpler imports
-import kiwi.json.JSONAdapter;
+import kuro.json.JSONAdapter;
 
 public class Tutorial {
 	public static void main( String[] args){

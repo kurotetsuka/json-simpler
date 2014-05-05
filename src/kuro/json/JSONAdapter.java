@@ -1,4 +1,4 @@
-package kiwi.json;
+package kuro.json;
 
 //standard library imports
 import java.util.NoSuchElementException;
@@ -26,6 +26,8 @@ public class JSONAdapter {
 			"JSONAdapter passed an object that was not a json-simple type.");}
 
 	//main get function
+	public Object get(){
+		return root;}
 	public JSONAdapter get( int index){
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
@@ -113,9 +115,17 @@ public class JSONAdapter {
 		//we're done, return
 		return new JSONAdapter( object);}
 
-	public Object set( int index){
-		return null;}
-	public Object set( String tag){
+	//set functions
+	//array set functions
+	public Object set( int index, Object object){
+		if( ! this.isJSONArray())
+			throw new NoSuchElementException(
+				"Root is not an array");
+		JSONArray array = (JSONArray) root;
+		return array.set( index, object);}
+
+	//object set functions
+	public Object set( String tag, Object object){
 		//validation
 		if( tag == null)
 			//this is not an error, this is indended behavior.
@@ -136,6 +146,33 @@ public class JSONAdapter {
 		//debug print statement
 		if( debug)
 			System.out.printf( "request: [%s]\n", request);
+
+		//get tokens
+		Vector<Token> tokens = getTokens( request);
+		//getTokens should never return null
+		if( tokens == null )
+			throw new NullPointerException(
+				"getTokens() returned null?! Wtf?!");
+		if( tokens.size() == 0)
+			return this;
+
+		//start at root of the tree
+		JSONAdapter previous = this;
+		JSONAdapter adapter = this;
+		//for each token
+		int i = 0;
+		for( Token token : tokens){
+			//debug print statement
+			if( debug)
+				System.out.printf( "token: [%b, %s]\n",
+					token.symbol, token.symbol ? token.name :
+						String.valueOf( token.index));
+			if( token.symbol);
+				//if( ! adapter
+
+			else;}
+
+
 		return null;}
 
 	//validation functions

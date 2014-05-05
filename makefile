@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 1.0.1a1
+version = 1.0.1a2
 cp = bin:lib/*
 dest = -d bin
 docscp = lib/*
@@ -34,7 +34,7 @@ run: test
 
 $(jar_file): $(class_files) manifest.mf
 	rm -rf jar/*
-	jar cmf manifest.mf $@ -C bin kiwi
+	jar cmf manifest.mf $@ -C bin kuro
 jar: $(jar_file)
 jar-test: jar
 	java -jar $(jar_file)
@@ -62,8 +62,8 @@ git-prepare:
 #test commands
 test: test-tutorial
 
-test-jsonadapter: bin/kiwi/json/test/TestJSONAdapter.class
-	java -cp $(cp) kiwi.json.test.TestJSONAdapter
+test-jsonadapter: bin/kuro/json/test/TestJSONAdapter.class
+	java -cp $(cp) kuro.json.test.TestJSONAdapter
 
-test-tutorial: bin/kiwi/json/tutorial/Tutorial.class
-	java -cp $(cp) kiwi.json.tutorial.Tutorial
+test-tutorial: bin/kuro/json/tutorial/Tutorial.class
+	java -cp $(cp) kuro.json.tutorial.Tutorial

@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 1.0.1a2
+version = 1.0.1a3
 cp = bin:lib/*
 dest = -d bin
 docscp = lib/*
@@ -48,7 +48,7 @@ docs-test: docs
 
 $(package_file): \
 		$(class_files) $(jar_file) $(docs_path) \
-		readme.md license.md
+		data gnu-lgpl-v3.0.md license.md readme.md
 	tar -cf $(package_file) $(docs_path) $(jar_file) readme.md license.md
 package: $(package_file)
 package-test: package

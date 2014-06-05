@@ -175,6 +175,23 @@ public class JSONAdapter {
 
 		return null;}
 
+	//contains functions
+	public boolean containsIndex( int index){
+		if( this.isJSONArray()){
+			JSONArray array = this.getJSONArray();
+			return index >= 0 && index < array.size();}
+		else return false;}
+	public boolean containsKey( String key){
+		if( this.isJSONObject()){
+			JSONObject object = this.getJSONObject();
+			return object.containsKey( key);}
+		else return false;}
+	public boolean containsValue( Object value){
+		if( this.isJSONObject()){
+			JSONObject object = this.getJSONObject();
+			return object.containsValue( value);}
+		else return false;}
+
 	//validation functions
 	public boolean isBoolean(){
 		return root instanceof Boolean;}

@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 1.0.1a4
+version = 1.1.0a1
 cp = bin:lib/*
 dest = -d bin
 docscp = lib/*
@@ -16,8 +16,8 @@ docs_path = javadoc
 jar_file = jar/json-simpler-$(version).jar
 package_file = pkg/json-simpler-$(version).tar.gz
 options =
-warnings =
 #warnings = -Xlint:deprecation
+#warnings = -Xlint:unchecked
 
 #includes
 include lists.mk
@@ -55,7 +55,7 @@ $(package_file): \
 		data gnu-lgpl-v3.0.md license.md readme.md
 package: $(package_file)
 package-test: package
-	file-roller $(package_file) &
+	file-roller $(package_file) &> /dev/null &
 
 #test commands
 test: test-tutorial

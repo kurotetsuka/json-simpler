@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 1.0.1a3
+version = 1.0.1a4
 cp = bin:lib/*
 dest = -d bin
 docscp = lib/*
@@ -41,29 +41,29 @@ jar-test: jar
 
 $(docs_path): $(source_files)
 	rm -rf $(docs_path)
-	javadoc -classpath $(docscp) -d $(docs_path) $(source_files)
+	javadoc -classpath $(docscp) \
+		-d $(docs_path) $(source_files)
 docs: $(docs_path)
 docs-test: docs
 	chromium javadoc/index.html &
 
 $(package_file): \
-		$(class_files) $(jar_file) $(docs_path) \
+		$(docs_path) $(jar_file) \
 		data gnu-lgpl-v3.0.md license.md readme.md
-	tar -cf $(package_file) $(docs_path) $(jar_file) readme.md license.md
+	tar -cf $(package_file) \
+		$(docs_path) $(jar_file) \
+		data gnu-lgpl-v3.0.md license.md readme.md
 package: $(package_file)
 package-test: package
 	file-roller $(package_file) &
 
-#other commands
-git-prepare:
-	git add -A
-	git add -u
-
 #test commands
 test: test-tutorial
 
-test-jsonadapter: bin/kuro/json/test/TestJSONAdapter.class
-	java -cp $(cp) kuro.json.test.TestJSONAdapter
+test-gets: bin/kuro/json/test/TestGets.class
+	java -cp $(cp) kuro.json.test.TestGets
+test-sets: bin/kuro/json/test/TestSets.class
+	java -cp $(cp) kuro.json.test.TestSets
 
 test-tutorial: bin/kuro/json/tutorial/Tutorial.class
 	java -cp $(cp) kuro.json.tutorial.Tutorial

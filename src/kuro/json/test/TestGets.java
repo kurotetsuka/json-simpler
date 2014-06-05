@@ -10,9 +10,8 @@ import org.json.simple.parser.*;
 //local imports
 import kuro.json.*;
 
-public class TestJSONAdapter {
+public class TestGets {
 	public static void main( String[] args){
-		System.out.println();
 		//datum
 		String data0 = "{ \"asdf\":[ 0, 1, 2, { \"fdsa\":\"hello\"}]}";
 		String data1 = "[0, 1, 2]";
@@ -63,10 +62,6 @@ public class TestJSONAdapter {
 						datum_i, requests_i);}
 				catch( Exception exception){
 					exception.printStackTrace();}*/
-
-		System.out.println();
-		for( JSONAdapter.Token token : JSONAdapter.getTokens(".female..focus..3"))
-			System.out.println( token);
 
 		//done
 		System.out.println( "Done all tests.");}

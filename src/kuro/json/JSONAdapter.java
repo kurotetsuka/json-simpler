@@ -25,7 +25,7 @@ public class JSONAdapter {
 		else throw new ClassCastException(
 			"JSONAdapter passed an object that was not a json-simple type.");}
 
-	//main get function
+	//get functions
 	public Object get(){
 		return root;}
 	public JSONAdapter get( int index){
@@ -116,7 +116,7 @@ public class JSONAdapter {
 		return new JSONAdapter( object);}
 
 	//set functions
-	//array set functions
+	//array set function
 	public Object set( int index, Object object){
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
@@ -124,7 +124,7 @@ public class JSONAdapter {
 		JSONArray array = (JSONArray) root;
 		return array.set( index, object);}
 
-	//object set functions
+	//object set function
 	public Object set( String tag, Object object){
 		//validation
 		if( tag == null)
@@ -157,20 +157,22 @@ public class JSONAdapter {
 			return this;
 
 		//start at root of the tree
-		JSONAdapter previous = this;
 		JSONAdapter adapter = this;
 		//for each token
-		int i = 0;
-		for( Token token : tokens){
+		int i;
+		for( i = 0; i < tokens.size() - 1; i++){
+			Token token = tokens.get( i);
 			//debug print statement
 			if( debug)
 				System.out.printf( "token: [%b, %s]\n",
 					token.symbol, token.symbol ? token.name :
 						String.valueOf( token.index));
-			if( token.symbol);
-				//if( ! adapter
+			if( token.symbol)
+				if( ! adapter.isJSONObject())
+					throw new NoSuchElement
 
-			else;}
+			else
+				if( ! adapter.isJSONArray());}
 
 
 		return null;}

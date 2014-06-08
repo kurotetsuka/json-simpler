@@ -31,149 +31,56 @@ public class JSONAdapter {
 	public JSONAdapter get( int index){
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
-				"Root is not an array");
-		return new JSONAdapter(((JSONArray) root).get( index));}
+				"Root is not an json array");
+		return new JSONAdapter(
+			( (JSONArray) root).get( index));}
 	public JSONAdapter get( String tag){
-		//validation
-		if( tag == null)
-			//this is not an error, this is indended behavior.
-			return this;
-
-		//setup
-		//figure out request
-		String request;
-		if( tag.length() > 0)
-			//preppend a '.', if they probably wanted one
-			if( tag.charAt( 0) != '.' &&
-					tag.charAt( 0) != '[')
-				request = '.' + tag;
-			else request = tag;
-		else
-			//they sent an empty string?!
-			return this;
-		//debug print statement
-		if( debug)
-			System.out.printf( "request: [%s]\n", request);
-
-		//get tokens
-		Vector<Token> tokens = getTokens( request);
-		//getTokens should never return null
-		if( tokens == null )
-			throw new NullPointerException(
-				"getTokens() returned null?! Wtf?!");
-		if( tokens.size() == 0)
-			return this;
-
-		//start at root of the tree
-		Object object = root;
-		//for each token
-		for( Token token : tokens){
-			//debug print statement
-			if( debug)
-				System.out.printf( "token: [%b, %s]\n",
-					token.symbol, token.symbol ? token.name :
-						String.valueOf( token.index));
-
-			//try a json object cast
-			if( object instanceof JSONObject){
-				//check that this step in the request is dereferencing an object
-				if( ! token.symbol)
-					throw new NoSuchElementException( String.format(
-						"Could not find element %s in %d", token.index, object));
-				//cast the current object
-				JSONObject current = (JSONObject) object;
-				//check object contains key
-				if( ! current.containsKey( token.name))
-					throw new NoSuchElementException( String.format(
-						"Could not find element %s in %s", token.name, object));
-				//get key
-				object = current.get( token.name);}
-
-			//try a json array cast
-			else if( object instanceof JSONArray){
-				//check that this step in the request is indexing an array
-				if( token.symbol)
-					throw new NoSuchElementException( String.format(
-						"Could not find element %s in %s", token.name, object));
-				//cast the current object
-				JSONArray current = (JSONArray) object;
-				//get indexed object
-				try {
-					object = current.get( token.index);}
-				//catch invalid index
-				catch( IndexOutOfBoundsException exception){
-					throw new NoSuchElementException( String.format(
-						"Could not find index %d in %s", token.index, object));}}
-
-			//all possible casts failed
-			//we cant go any deeper, something's gone wrong
-			else throw new NoSuchElementException( String.format(
-				"Could not find element %s in %s", tag, object));
-
-			if( debug)
-				System.out.printf( "result: [%s]", object);}
-		//we're done, return
-		return new JSONAdapter( object);}
+		if( ! this.isJSONObject())
+			throw new NoSuchElementException(
+				"Root is not a json object");
+		return new JSONAdapter(
+			( (JSONObject) root).get( tag));}
+	public JSONAdapter get( String[] tags){
+		if( ! this.isJSONObject())
+			throw new NoSuchElementException(
+				"Root is not a json object");
+		JSONAdapter adapter = this;
+		for( String tag : tags)
+			adapter = adapter.get( tag);
+		return adapter;}
 
 	//set functions
 	//array set function
-	public Object set( int index, Object object){
+	public Object set( int index, Object value){
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
 				"Root is not an array");
-		JSONArray array = (JSONArray) root;
-		return array.set( index, object);}
+		JSONArray array = this.getJSONArray();
+		return array.set( index, value);}
 
 	//object set function
-	public Object set( String tag, Object object){
-		//validation
-		if( tag == null)
-			//this is not an error, this is indended behavior.
-			return this;
-
-		//setup
-		//figure out request
-		String request;
-		if( tag.length() > 0)
-			//preppend a '.', if they probably wanted one
-			if( tag.charAt( 0) != '.' &&
-					tag.charAt( 0) != '[')
-				request = '.' + tag;
-			else request = tag;
-		else
-			//they sent an empty string?!
-			return this;
-		//debug print statement
-		if( debug)
-			System.out.printf( "request: [%s]\n", request);
-
-		//get tokens
-		Vector<Token> tokens = getTokens( request);
-		//getTokens should never return null
-		if( tokens == null )
-			throw new NullPointerException(
-				"getTokens() returned null?! Wtf?!");
-		if( tokens.size() == 0)
-			return this;
-
-		//start at root of the tree
+	public Object set( String tag, Object value){
+		if( ! this.isJSONObject())
+			throw new NoSuchElementException(
+				"Root is not a json object");
+		JSONObject object = this.getJSONObject();
+		return null;}
+	public Object set( String[] tags, Object value){
+		if( ! this.isJSONObject())
+			throw new NoSuchElementException(
+				"Root is not a json object");
+		int i = 0;
+		int last_i = tags.length - 1;
 		JSONAdapter adapter = this;
-		//for each token
-		int i;
-		for( i = 0; i < tokens.size() - 1; i++){
-			Token token = tokens.get( i);
-			//debug print statement
-			if( debug)
-				System.out.printf( "token: [%b, %s]\n",
-					token.symbol, token.symbol ? token.name :
-						String.valueOf( token.index));
-			if( token.symbol)
-				if( ! adapter.isJSONObject())
-					throw new NoSuchElement
-
-			else
-				if( ! adapter.isJSONArray());}
-
+		for( String tag : tags){
+			if( i == last_i) break;
+			if( adapter.containsKey( tag)){
+				JSONAdapter next = adapter.get( tag);
+				if( ! next.isJSONObject())
+					break;
+				else
+					adapter = next;}
+			else break;}
 
 		return null;}
 
@@ -378,64 +285,6 @@ public class JSONAdapter {
 	public Object getObject( int index){
 		JSONAdapter adapter = this.get( index);
 		return adapter.getObject();}
-
-	//utility methods
-	public static Vector<Token> getTokens( String tag){
-		//setup
-		String content = new String( tag);
-		Vector<Token> tokens = new Vector<Token>();
-		//while there's more to parse
-		while( content.length() > 0){
-			Token token = null;
-			char first = content.charAt( 0);
-			String label = null;
-			int escapes = 0;
-			//find type.
-			switch( first){
-				case '.':{
-					//parse the label
-					label = new String();
-					for( int i = 1; i < content.length(); i++){
-						char current = content.charAt( i);
-						if( current == '.'){
-							//if the next character is an escapable char, escape it
-							if( i + 1 >= content.length())
-								break;
-							char next = content.charAt( i + 1);
-							if( next == '.' || next == '['){
-								label += next;
-								escapes++;
-								i++;}
-							//otherwise we're done parsing the label
-							else break;}
-						else if( current == '[')
-							break;
-						else
-							label += current;}
-					//done parsing this label
-					//throw exceptions!
-					if( label.isEmpty()) break;
-					//we're all good, make token
-					token = new Token( label);
-					break;}
-				case '[':{
-					try{
-						int closing = content.indexOf( ']');
-						if( closing < 1) break;
-						label = content.substring( 1, closing);
-						token = new Token( Integer.parseInt( label));}
-					catch( NumberFormatException exception){}
-					break;}
-				default:
-					break;}
-			//throw exceptions!
-			if( label == null) break;
-			if( token == null) break;
-			//remove token from substring
-			content = content.substring(
-				label.length() + ( token.symbol ? 1 : 2) + escapes);
-			tokens.add( token);}
-		return tokens;}
 
 	//accessor methods
 	public String toString(){

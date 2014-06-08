@@ -1,4 +1,10 @@
 ## todo list
 
-### v1.1
+### v2.0
  * finish JSONAdapter.set( String[], Object)
+
+### future
+ * JSONAdapter.dereference( String)
+ * tests
+ * documentation
+ * commenting

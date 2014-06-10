@@ -10,10 +10,10 @@ import org.json.simple.*;
 public class JSONAdapter {
 	//private fields
 	private Object root;
-	private static final boolean debug = false;
 
 	//constructors
 	public JSONAdapter( Object object){
+		//type check
 		if( ( object == null) ||
 				( object instanceof JSONArray) ||
 				( object instanceof JSONObject) ||
@@ -22,56 +22,84 @@ public class JSONAdapter {
 				( object instanceof Long) ||
 				( object instanceof String))
 			root = object;
+		//throw error
 		else throw new ClassCastException(
-			"JSONAdapter passed an object that was not a json-simple type.");}
+			"JSONAdapter passed an object that was not a json-simple type");}
 
 	//get functions
+	//raw get
 	public Object get(){
 		return root;}
+	//array get
 	public JSONAdapter get( int index){
+		//validation
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
 				"Root is not an json array");
-		return new JSONAdapter(
-			( (JSONArray) root).get( index));}
+		//get desired object
+		Object result = ( (JSONArray) root).get( index);
+		//create and return adapter for desired object
+		return new JSONAdapter( result);}
+	//object get
 	public JSONAdapter get( String tag){
+		//validation
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
 				"Root is not a json object");
-		return new JSONAdapter(
-			( (JSONObject) root).get( tag));}
+		//get desired object
+		Object result = ( (JSONObject) root).get( tag);
+		//create and return adapter for desired object
+		return new JSONAdapter( result);}
+	//multi-level object get
 	public JSONAdapter get( String[] tags){
+		//validation
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
-				"Root is not a json object");
+				"Root object is not a json object");
+		if( tags.length == 0)
+			throw new IllegalArgumentException(
+				"Tags array must not be empty");
+		//walk through the object hierarchy
 		JSONAdapter adapter = this;
 		for( String tag : tags)
 			adapter = adapter.get( tag);
+		//return adapter for desired object
 		return adapter;}
 
 	//set functions
-	//array set function
+	//array set
 	public Object set( int index, Object value){
+		//validation
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
 				"Root is not an array");
+		//apply the set
 		JSONArray array = this.getJSONArray();
 		return array.set( index, value);}
 
-	//object set function
+	//object set
 	public Object set( String tag, Object value){
+		//validation
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
 				"Root is not a json object");
+		//apply the set
 		JSONObject object = this.getJSONObject();
-		return null;}
+		return object.put( tag, value);}
+	//multi-level object set
 	public Object set( String[] tags, Object value){
+		//validation
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
 				"Root is not a json object");
+		if( tags.length == 0)
+			throw new IllegalArgumentException(
+				"Tags array must not be empty");
+		//setup
 		int i = 0;
 		int last_i = tags.length - 1;
 		JSONAdapter adapter = this;
+		//find the highest existing object in the desired structure
 		for( String tag : tags){
 			if( i == last_i) break;
 			if( adapter.containsKey( tag)){
@@ -81,27 +109,40 @@ public class JSONAdapter {
 				else
 					adapter = next;}
 			else break;}
-
-		return null;}
+		//build the object structure
+		while( i < last_i){
+			String tag = tags[ i];
+			adapter.set( tag, new JSONObject());
+			adapter = adapter.get( tag);
+			i++;}
+		//put the desired value in the specified place
+		String last_tag = tags[ last_i];
+		return adapter.set( last_tag, value);}
 
 	//contains functions
 	public boolean containsIndex( int index){
+		//validate type
 		if( this.isJSONArray()){
 			JSONArray array = this.getJSONArray();
 			return index >= 0 && index < array.size();}
+		//we're not an array, so we cannot contain an index
 		else return false;}
 	public boolean containsKey( String key){
+		//validate type
 		if( this.isJSONObject()){
 			JSONObject object = this.getJSONObject();
 			return object.containsKey( key);}
+		//we're not an object, so we cannot contain a key
 		else return false;}
 	public boolean containsValue( Object value){
+		//validate type
 		if( this.isJSONObject()){
 			JSONObject object = this.getJSONObject();
 			return object.containsValue( value);}
+		//we're not an object, so we cannot contain a vlue
 		else return false;}
 
-	//validation functions
+	//type check functions
 	public boolean isBoolean(){
 		return root instanceof Boolean;}
 	public boolean isDecimal(){
@@ -119,102 +160,168 @@ public class JSONAdapter {
 	public boolean isJSONObject(){
 		return root instanceof JSONObject;}
 
-	//validation dereference functions
+	//object type check functions
 	public boolean isBoolean( String tag){
-		return get( tag).isBoolean();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isBoolean();}
 	public boolean isDecimal( String tag){
-		return get( tag).isDecimal();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isDecimal();}
 	public boolean isInteger( String tag){
-		return get( tag).isInteger();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isInteger();}
 	public boolean isNull( String tag){
-		return get( tag).isNull();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isNull();}
 	public boolean isNumber( String tag){
-		return get( tag).isNumber();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isNumber();}
 	public boolean isString( String tag){
-		return get( tag).isString();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isString();}
 	public boolean isJSONArray( String tag){
-		return get( tag).isJSONArray();}
+	//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isJSONArray();}
 	public boolean isJSONObject( String tag){
-		return get( tag).isJSONObject();}
+		//get adapter for tag
+		JSONAdapter adapter = this.get( tag);
+		//return type check
+		return adapter.isJSONObject();}
 
-	//validation indexed functions
+	//array type check functions
 	public boolean isBoolean( int index){
-		return get( index).isBoolean();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isBoolean();}
 	public boolean isDecimal( int index){
-		return get( index).isDecimal();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isDecimal();}
 	public boolean isInteger( int index){
-		return get( index).isInteger();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isInteger();}
 	public boolean isNull( int index){
-		return get( index).isNull();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isNull();}
 	public boolean isNumber( int index){
-		return get( index).isNumber();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isNumber();}
 	public boolean isString( int index){
-		return get( index).isString();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isString();}
 	public boolean isJSONArray( int index){
-		return get( index).isJSONArray();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isJSONArray();}
 	public boolean isJSONObject( int index){
-		return get( index).isJSONObject();}
+		//get adapter for index
+		JSONAdapter adapter = this.get( index);
+		//return type check
+		return adapter.isJSONObject();}
 
 	//cast functions
 	public boolean getBoolean(){
+		//validate type
 		if( isBoolean())
 			return ( (Boolean) root).booleanValue();
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Boolean.class.getName()));}
 	public Number getNumber(){
+		//validate type
 		if( isNumber())
 			return (Number) root;
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Number.class.getName()));}
 	public double getDouble(){
+		//validate type
 		if( isDecimal())
 			return ( (Double) root).doubleValue();
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Double.class.getName()));}
 	public float getFloat(){
+		//validate type
 		if( isDecimal())
 			return ( (Double) root).floatValue();
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Float.class.getName()));}
 	public int getInteger(){
+		//validate type
 		if( isInteger())
 			return ( (Long) root).intValue();
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Integer.class.getName()));}
 	public long getLong(){
+		//validate type
 		if( isInteger())
 			return ( (Long) root).longValue();
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				Long.class.getName()));}
 	public String getString(){
+		//validate type
 		if( isString())
 			return (String) root;
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				String.class.getName()));}
 	public JSONArray getJSONArray(){
+		//validate type
 		if( isJSONArray())
 			return (JSONArray) root;
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
 				JSONArray.class.getName()));}
 	public JSONObject getJSONObject(){
+		//validate type
 		if( isJSONObject())
 			return (JSONObject) root;
+		//throw error
 		else throw new ClassCastException(
 			String.format( "%s cannot be cast to %s",
 				root == null ? "null" : root.getClass().getName(),
@@ -222,103 +329,125 @@ public class JSONAdapter {
 	public Object getObject(){
 		return root;}
 
-	//get dereference functions
+	//object get cast functions
 	public boolean getBoolean( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getBoolean();}
 	public Number getNumber( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getNumber();}
 	public double getDouble( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getDouble();}
 	public float getFloat( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getFloat();}
 	public int getInteger( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getInteger();}
 	public long getLong( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getLong();}
 	public String getString( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getString();}
 	public JSONArray getJSONArray( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getJSONArray();}
 	public JSONObject getJSONObject( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getJSONObject();}
 	public Object getObject( String tag){
+		//get adapter for tag
 		JSONAdapter adapter = this.get( tag);
+		//return cast
 		return adapter.getObject();}
 
-	//get indexed functions
+	//array get cast functions
 	public boolean getBoolean( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getBoolean();}
 	public Number getNumber( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getNumber();}
 	public double getDouble( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getDouble();}
 	public float getFloat( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getFloat();}
 	public int getInteger( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getInteger();}
 	public long getLong( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getLong();}
 	public String getString( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getString();}
 	public JSONArray getJSONArray( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getJSONArray();}
 	public JSONObject getJSONObject( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getJSONObject();}
 	public Object getObject( int index){
+		//get adapter for index
 		JSONAdapter adapter = this.get( index);
+		//return cast
 		return adapter.getObject();}
 
-	//accessor methods
+	//accessors
+	@Override
 	public String toString(){
 		return root == null ?
-			"null" :
-			root.toString();}
+			"null" : root.toString();}
 
 	public int size(){
+		//validate type
 		if( this.isJSONArray())
 			return ( (JSONArray) root).size();
 		if( this.isJSONObject())
 			return ( (JSONObject) root).size();
+		//throw error
 		else
 			throw new ClassCastException(
 				String.format( "Cannot get the size of a %s",
 					root.getClass().getName()));}
-
-	//subclasses
-	public static class Token {
-		public boolean symbol;
-		public String name;
-		public int index;
-
-		public Token( String name){
-			this.symbol = true;
-			this.name = name;
-			this.index = -1;}
-		public Token( int index){
-			this.symbol = false;
-			this.name = null;
-			this.index = index;}
-
-		public String toString(){
-			return symbol ? name :
-				String.valueOf( index);}
-	}
 }

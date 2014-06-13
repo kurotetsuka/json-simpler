@@ -21,6 +21,8 @@
  * JSONAdapter.reference( String, Object) ?
  * JSONAdapter.ref( String, Object) ?
  * JSONAdapter.setRef( String, Object) ?
+ * iterator
+ * deep iterator
  * test above
  * document above
  * complete fork of json-simple ?

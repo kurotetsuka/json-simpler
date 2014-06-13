@@ -1,16 +1,29 @@
 ## todo list
 ### v2.1
  * tests
- * documentation
+ * JSONAdapter documentation
 
 ### v3.0
  * JSONAdapter.dereference( String) ?
  * JSONAdapter.deref( String) ?
  * JSONAdapter.getRef( String) ?
+ * test above
+ * document above
 
 ### future
- * tests
- * documentation
+ * merging
+ 	 * JSONMerger ?
+ 	 * JSONMergeStrategy ?
+	 * JSONAdapter.merge( JSONAdapter)
+	 * JSONAdapter.merge( JSONArray)
+	 * JSONAdapter.merge( JSONObject)
+	 * JSONAdapter.merge( Object) ?
+ * JSONAdapter.reference( String, Object) ?
+ * JSONAdapter.ref( String, Object) ?
+ * JSONAdapter.setRef( String, Object) ?
+ * test above
+ * document above
+ * complete fork of json-simple ?
 
 ## done list
 ### v2.0

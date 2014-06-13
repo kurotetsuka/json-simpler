@@ -14,13 +14,7 @@ public class JSONAdapter {
 	//constructors
 	public JSONAdapter( Object object){
 		//type check
-		if( ( object == null) ||
-				( object instanceof JSONArray) ||
-				( object instanceof JSONObject) ||
-				( object instanceof Boolean) ||
-				( object instanceof Double) ||
-				( object instanceof Long) ||
-				( object instanceof String))
+		if( isJSONSimpleType( object))
 			root = object;
 		//throw error
 		else throw new ClassCastException(
@@ -73,6 +67,9 @@ public class JSONAdapter {
 		if( ! this.isJSONArray())
 			throw new NoSuchElementException(
 				"Root is not an array");
+		if( ! isJSONSimpleType( value))
+			throw new ClassCastException(
+				"JSONAdapter passed an object that was not a json-simple type");
 		//apply the set
 		JSONArray array = this.getJSONArray();
 		return array.set( index, value);}
@@ -83,6 +80,9 @@ public class JSONAdapter {
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
 				"Root is not a json object");
+		if( ! isJSONSimpleType( value))
+			throw new ClassCastException(
+				"JSONAdapter passed an object that was not a json-simple type");
 		//apply the set
 		JSONObject object = this.getJSONObject();
 		return object.put( tag, value);}
@@ -92,6 +92,9 @@ public class JSONAdapter {
 		if( ! this.isJSONObject())
 			throw new NoSuchElementException(
 				"Root is not a json object");
+		if( ! isJSONSimpleType( value))
+			throw new ClassCastException(
+				"JSONAdapter passed an object that was not a json-simple type");
 		if( tags.length == 0)
 			throw new IllegalArgumentException(
 				"Tags array must not be empty");
@@ -432,6 +435,17 @@ public class JSONAdapter {
 		JSONAdapter adapter = this.get( index);
 		//return cast
 		return adapter.getObject();}
+
+	//utility functions
+	public static boolean isJSONSimpleType( Object object){
+		 return (
+	 		( object == null) ||
+			( object instanceof JSONArray) ||
+			( object instanceof JSONObject) ||
+			( object instanceof Boolean) ||
+			( object instanceof Double) ||
+			( object instanceof Long) ||
+			( object instanceof String));}
 
 	//accessors
 	@Override

@@ -1,8 +1,5 @@
 package kuro.json.test;
 
-//standard libray imports
-import java.util.NoSuchElementException;
-
 //junit imports
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -15,17 +12,17 @@ import org.json.simple.parser.*;
 import kuro.json.*;
 
 /**
- * Tests all the set functions for kuro.json.JSONAdapter
+ * Tests all the contains functions for kuro.json.JSONAdapter
  */
 @RunWith(org.junit.runners.JUnit4.class)
-public class TestSets {
+public class TestContains {
 
 	@Test
-	void testArraySet(){}
+	void testContainsIndex(){}
 
 	@Test
-	void testObjectSet(){}
+	void testContainsKey(){}
 
 	@Test
-	void testMultiLevelObjectSet(){}
+	void testContainsValue(){}
 }

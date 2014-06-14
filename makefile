@@ -10,11 +10,8 @@ clean:
 #variables
 version = 2.0a1
 cp = bin:lib/*
-dest = -d bin
-docscp = lib/*
+docscp = lib/*:
 docs_path = javadoc
-jar_file = jar/json-simpler-$(version).jar
-package_file = pkg/json-simpler-$(version).tar.gz
 options =
 #warnings = -Xlint:deprecation
 #warnings = -Xlint:unchecked
@@ -22,48 +19,52 @@ options =
 #includes
 include lists.mk
 include dependencies.mk
+include packaging.mk
 
 #compilation definitions
 $(class_files): bin/%.class : src/%.java
-	javac -cp $(cp) $(dest) $(warnings) $<
+	javac -cp $(cp) -d bin $(warnings) $<
 
-#commands
+#command definitions
 build: $(class_files)
+build-base: $(base_class_files)
 
 run: test
 
-$(jar_file): $(class_files) manifest.mf
-	rm -rf jar/*
-	jar cmf manifest.mf $@ -C bin kuro
-jar: $(jar_file)
-jar-test: jar
-	java -jar $(jar_file)
+jar: $(jar_base)
+jars: $(jar_files)
+docs-test: docs
+	chrome javadoc/index.html &
+package: $(package_base)
+packages: $(package_files)
+package-test: package
+	file-roller $(package_base) &> /dev/null &
 
+#documentation
 $(docs_path): $(source_files)
 	rm -rf $(docs_path)
 	javadoc -classpath $(docscp) \
 		-d $(docs_path) $(source_files)
 docs: $(docs_path)
-docs-test: docs
-	chromium javadoc/index.html &
-
-$(package_file): \
-		$(docs_path) $(jar_file) \
-		data gnu-lgpl-v3.0.md license.md readme.md
-	tar -cf $(package_file) \
-		$(docs_path) $(jar_file) \
-		data gnu-lgpl-v3.0.md license.md readme.md
-package: $(package_file)
-package-test: package
-	file-roller $(package_file) &> /dev/null &
 
 #test commands
 test: test-tutorial
 
+test-all: bin/kuro/json/test/TestJSONAdapter.class
+	java -cp $(cp) kuro.json.test.TestJSONAdapter
+
+test-castgets: bin/kuro/json/test/TestCastGets.class
+	java -cp $(cp) kuro.json.test.TestCastGets
+test-casts: bin/kuro/json/test/TestCasts.class
+	java -cp $(cp) kuro.json.test.TestCasts
+test-contains: bin/kuro/json/test/TestContains.class
+	java -cp $(cp) kuro.json.test.TestContains
 test-gets: bin/kuro/json/test/TestGets.class
 	java -cp $(cp) kuro.json.test.TestGets
 test-sets: bin/kuro/json/test/TestSets.class
 	java -cp $(cp) kuro.json.test.TestSets
+test-typechecks: bin/kuro/json/test/TestTypeChecks.class
+	java -cp $(cp) kuro.json.test.TestTypeChecks
 
 test-tutorial: bin/kuro/json/tutorial/Tutorial.class
 	java -cp $(cp) kuro.json.tutorial.Tutorial

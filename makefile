@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 2.0a1
+version = 2.0
 cp = bin:lib/*
 docscp = lib/*:
 docs_path = javadoc
@@ -48,7 +48,7 @@ $(docs_path): $(source_files)
 docs: $(docs_path)
 
 #test commands
-test: test-tutorial
+test: test-all
 
 test-all: bin/kuro/json/test/TestJSONAdapter.class
 	java -cp $(cp) kuro.json.test.TestJSONAdapter

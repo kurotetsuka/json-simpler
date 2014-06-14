@@ -8,7 +8,7 @@ clean:
 	rm -rf jar/*
 
 #variables
-version = 2.0
+version = 2.1a1
 cp = bin:lib/*
 docscp = lib/*:
 docs_path = javadoc

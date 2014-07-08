@@ -1,8 +1,5 @@
 package kuro.json.test;
 
-//standard libray imports
-import java.util.NoSuchElementException;
-
 //junit imports
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -20,6 +17,9 @@ import kuro.json.*;
 @RunWith(org.junit.runners.JUnit4.class)
 public class TestSets {
 
+	@Before
+	public void setup(){}
+
 	@Test
 	void testArraySet(){}
 
@@ -27,5 +27,5 @@ public class TestSets {
 	void testObjectSet(){}
 
 	@Test
-	void testMultiLevelObjectSet(){}
+	void testMultiLevelSet(){}
 }

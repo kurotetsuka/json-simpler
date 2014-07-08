@@ -1,14 +1,12 @@
 ## todo list
 ### v2.1
+ * JSONAdapter.deref( String)
+
+### v2.1.1
+ * documentation
  * tests
- * JSONAdapter documentation
 
 ### v3.0
- * JSONAdapter.dereference( String) ?
- * JSONAdapter.deref( String) ?
- * JSONAdapter.getRef( String) ?
- * test above
- * document above
 
 ### future
  * merging

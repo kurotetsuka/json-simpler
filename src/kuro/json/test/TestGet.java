@@ -17,6 +17,9 @@ import kuro.json.*;
 @RunWith(org.junit.runners.JUnit4.class)
 public class TestGets {
 
+	@Before
+	public void setup(){}
+
 	@Test
 	void testArrayGet(){}
 
@@ -24,5 +27,5 @@ public class TestGets {
 	void testObjectGet(){}
 
 	@Test
-	void testMultiLevelObjectGet(){}
+	void testMultiLevelGet(){}
 }

@@ -17,7 +17,7 @@ public class JSONAdapter {
 		if( isJSONSimpleType( object))
 			root = object;
 		//throw error
-		else throw new ClassCastException(
+		else throw new IllegalArgumentException(
 			"JSONAdapter passed an object that was not a json-simple type");}
 
 	//get functions
@@ -28,8 +28,11 @@ public class JSONAdapter {
 	public JSONAdapter get( int index){
 		//validation
 		if( ! this.isJSONArray())
+			throw new ClassCastException(
+				"JSONAdapter root object is not an json array");
+		if( ! this.containsIndex( index))
 			throw new NoSuchElementException(
-				"Root is not an json array");
+				String.format( "JSONAdapter does not contain index: %s", index));
 		//get desired object
 		Object result = ( (JSONArray) root).get( index);
 		//create and return adapter for desired object
@@ -38,18 +41,21 @@ public class JSONAdapter {
 	public JSONAdapter get( String tag){
 		//validation
 		if( ! this.isJSONObject())
+			throw new ClassCastException(
+				"JSONAdapter root object is not a json object");
+		if( ! this.containsKey( tag))
 			throw new NoSuchElementException(
-				"Root is not a json object");
+				String.format( "JSONAdapter does not contain key: %s", tag));
 		//get desired object
 		Object result = ( (JSONObject) root).get( tag);
 		//create and return adapter for desired object
 		return new JSONAdapter( result);}
-	//multi-level object get
+ 	//multi-level object get
 	public JSONAdapter get( String[] tags){
 		//validation
 		if( ! this.isJSONObject())
-			throw new NoSuchElementException(
-				"Root object is not a json object");
+			throw new ClassCastException(
+				"JSONAdapter root object is not a json object");
 		if( tags.length == 0)
 			throw new IllegalArgumentException(
 				"Tags array must not be empty");
@@ -65,10 +71,10 @@ public class JSONAdapter {
 	public Object set( int index, Object value){
 		//validation
 		if( ! this.isJSONArray())
-			throw new NoSuchElementException(
-				"Root is not an array");
-		if( ! isJSONSimpleType( value))
 			throw new ClassCastException(
+				"JSONAdapter root object is not an array");
+		if( ! isJSONSimpleType( value))
+			throw new IllegalArgumentException(
 				"JSONAdapter passed an object that was not a json-simple type");
 		//apply the set
 		JSONArray array = this.getJSONArray();
@@ -78,10 +84,10 @@ public class JSONAdapter {
 	public Object set( String tag, Object value){
 		//validation
 		if( ! this.isJSONObject())
-			throw new NoSuchElementException(
-				"Root is not a json object");
-		if( ! isJSONSimpleType( value))
 			throw new ClassCastException(
+				"JSONAdapter root object is not a json object");
+		if( ! isJSONSimpleType( value))
+			throw new IllegalArgumentException(
 				"JSONAdapter passed an object that was not a json-simple type");
 		//apply the set
 		JSONObject object = this.getJSONObject();
@@ -90,10 +96,10 @@ public class JSONAdapter {
 	public Object set( String[] tags, Object value){
 		//validation
 		if( ! this.isJSONObject())
-			throw new NoSuchElementException(
-				"Root is not a json object");
-		if( ! isJSONSimpleType( value))
 			throw new ClassCastException(
+				"JSONAdapter root object is not a json object");
+		if( ! isJSONSimpleType( value))
+			throw new IllegalArgumentException(
 				"JSONAdapter passed an object that was not a json-simple type");
 		if( tags.length == 0)
 			throw new IllegalArgumentException(
@@ -112,7 +118,7 @@ public class JSONAdapter {
 				else
 					adapter = next;}
 			else break;}
-		//build the object structure
+		//build the rest of the desired structure
 		while( i < last_i){
 			String tag = tags[ i];
 			adapter.set( tag, new JSONObject());
@@ -121,6 +127,33 @@ public class JSONAdapter {
 		//put the desired value in the specified place
 		String last_tag = tags[ last_i];
 		return adapter.set( last_tag, value);}
+
+	//deref functions
+	public JSONAdapter deref( String reference){
+		//validation
+		if( reference == null)
+			throw new NullPointerException();
+		if( reference.isEmpty())
+			throw new IllegalArgumentException(
+				"reference string must not be empty");
+		//tokenize reference string
+		Vector<Token> tokens = Token.parse( reference);
+		//walk down token path
+		JSONAdapter adapter = this;
+		for( int i = 0; i < tokens.size(); i++){
+			Token token = tokens.get( i);
+			try{
+				adapter = token.isName() ?
+					adapter.get( token.name) :
+					adapter.get( token.index);}
+			catch( Exception exception){
+				throw new RuntimeException(
+					String.format(
+						"Could not dereference %s from this%s",
+						token.toString(), Token.toString( tokens, i)),
+					exception);}}
+		//return adapter for desired object
+		return adapter;}
 
 	//contains functions
 	public boolean containsIndex( int index){
@@ -464,4 +497,118 @@ public class JSONAdapter {
 			throw new ClassCastException(
 				String.format( "Cannot get the size of a %s",
 					root.getClass().getName()));}
+
+	//subclasses
+	/**
+	 * Just a little utility class to make dereferencing easier
+	 */
+	public static class Token {
+		//whether this token is a name
+		private boolean symbol;
+		//the name of this token
+		public String name;
+		//the index of this token
+		public int index;
+
+		//constructors
+		public Token( String name){
+			this.symbol = true;
+			this.name = name;
+			this.index = -1;}
+		public Token( int index){
+			this.symbol = false;
+			this.name = null;
+			this.index = index;}
+
+		//Accessors
+		public boolean isName(){
+			return symbol;}
+		public boolean isIndex(){
+			return ! symbol;}
+
+		public String toString(){
+			return String.format(
+				symbol ? ".%s" : "[%d]",
+				symbol ? name : index);}
+
+		//utility function
+		public static Vector<Token> parse( String reference){
+			//setup
+			Vector<Token> result = new Vector<Token>();
+			char[] chars = reference.toCharArray();
+			int begin = 0, end = 0;
+			//while we have unparsed characters left
+			while( begin < chars.length)
+				switch( chars[begin]){
+					//we're indexing an array
+					case '[':{
+						end = reference.indexOf( begin + 1, ']');
+						//check that bracket was matched
+						if( end < 0)
+							throw new IllegalArgumentException(
+								String.format(
+									"Unmatched bracket in reference string at index %d", begin));
+						//get and try to parse index string
+						String index_string = reference.substring( begin + 1, end);
+						int index;
+						try{
+							index = Integer.parseInt( index_string);}
+						//catch bad index string
+						catch( NumberFormatException exception){
+							throw new IllegalArgumentException(
+								String.format(
+									"Invalid number in reference string at index %d",
+									begin + 1),
+								exception);}
+						//assert non-negativity
+						if( index < 0)
+							throw new IllegalArgumentException(
+								String.format(
+									"Negative number in reference string at index %d",
+									begin + 1));
+						//add the token
+						result.add( new Token( index));
+						//increment begin index and iterate
+						begin = end + 1;
+						break;}
+					//we've got a symbol with a preceding dot
+					case '.':{
+						begin++;
+						if( begin >= chars.length)
+							throw new IllegalArgumentException(
+								"Orphaned '.' at end of reference string");}
+					//we've got a symbol
+					default:{
+						//find end of current token
+						int next_dot = reference.indexOf( '.', begin);
+						if( next_dot < 0) next_dot = reference.length();
+						int next_bracket = reference.indexOf( '[', begin);
+						if( next_bracket < 0) next_bracket = reference.length();
+						end = Math.min( next_dot, next_bracket);
+						//get token string
+						String token_string = reference.substring( begin, end);
+						//check for emptiness
+						if( token_string.isEmpty())
+							throw new IllegalArgumentException(
+								String.format(
+									"Empty token in reference string at index %d",
+									begin - 1));
+						//add the token
+						result.add( new Token( token_string));
+						//increment the begin index and iterate
+						begin = end;
+						break;}}
+			//return
+			return result;}
+		public static String toString( Vector<Token> tokens){
+			String result = new String();
+			for( Token token : tokens)
+				result += token.toString();
+			return result;}
+		public static String toString( Vector<Token> tokens, int end){
+			String result = new String();
+			for( int i = 0; i < end && i < tokens.size(); i++)
+				result += tokens.get(i).toString();
+			return result;}
+	}
 }

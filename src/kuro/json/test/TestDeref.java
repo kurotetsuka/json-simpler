@@ -12,20 +12,20 @@ import org.json.simple.parser.*;
 import kuro.json.*;
 
 /**
- * Tests all the contains functions for kuro.json.JSONAdapter
+ * Tests all the deref function for kuro.json.JSONAdapter
  */
 @RunWith(org.junit.runners.JUnit4.class)
-public class TestContains {
+public class TestDeref {
 
 	@Before
 	public void setup(){}
 
 	@Test
-	void testContainsIndex(){}
+	void testArrayDeref(){}
 
 	@Test
-	void testContainsKey(){}
+	void testObjectDeref(){}
 
 	@Test
-	void testContainsValue(){}
+	void testMultiLevelDeref(){}
 }

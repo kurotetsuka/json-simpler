@@ -15,6 +15,9 @@ import org.json.simple.parser.*;
 //json-simpler imports
 import kuro.json.JSONAdapter;
 
+/**
+ * A tutorial program that demonstrates the capability of kuro.json.JSONAdapter.
+ */
 public class Tutorial {
 	public static void main( String[] args){
 		//
@@ -39,7 +42,7 @@ public class Tutorial {
 		try {
 			root = new JSONParser().parse( data);}
 		catch( ParseException exception){
-			System.out.println("Your file was invalid!");
+			System.out.println( "Your file was invalid!");
 			exception.printStackTrace();
 			return;}
 
@@ -52,10 +55,14 @@ public class Tutorial {
 		boolean likesCake = adapter.getBoolean( "likes-cake");
 
 		//you can use dot-dereferencing notation to get sub-objects
-		float weight_kilos = adapter.getFloat( "weight.kilos");
+		//float weight_kilos = adapter.getFloat( "weight.kilos");
 		//alternative you can get adapters for sub-objects
 		JSONAdapter weight_adapter = adapter.get( "weight");
+		JSONAdapter kilos_adapter = adapter.deref( "weight.kilos");
+		float weight_kilos = kilos_adapter.getFloat();
 		double weight_pounds = weight_adapter.getDouble( "pounds");
+		System.out.printf( "weight: %f kilos, %f pounds\n",
+			weight_kilos, weight_pounds);
 
 		//you can use array indexing notation to get array elements
 		Date birthday = new Date(
@@ -70,7 +77,7 @@ public class Tutorial {
 			deathday_adapter.getInteger( 1),
 			deathday_adapter.getInteger( 2));
 
-		//If you want you can get objects and cast it yourself
+		//if you want you can get objects and cast it yourself
 		JSONArray friends = adapter.getJSONArray( "friends");
 		Object friend_object = friends.get( 0);
 		String friend = null;

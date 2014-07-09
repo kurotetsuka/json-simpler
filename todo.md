@@ -19,6 +19,7 @@
  * JSONAdapter.reference( String, Object) ?
  * JSONAdapter.ref( String, Object) ?
  * JSONAdapter.setRef( String, Object) ?
+ * custom exceptions for each possible failure cases
  * iterator
  * deep iterator
  * test above

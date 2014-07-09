@@ -102,11 +102,11 @@ public class Tutorial {
 		System.out.printf( "age: %d years\n", age);
 		System.out.printf( "likes cake: %s\n",
 			likesCake ? "definely man!" : "nope dude");
-		System.out.printf( "weight: %f kilos, %f pounds\n",
+		System.out.printf( "weight: %.2f kilos, %.2f pounds\n",
 			weight_kilos, weight_pounds);
 		System.out.printf( "birthday: %tF\n", birthday);
 		System.out.printf( "deathday: %tF\n", deathday);
-		System.out.printf( "friend: %s\n", friend);
+		System.out.printf( "first friend: %s\n", friend);
 		System.out.printf( "has girlfriend: %s\n",
 			hasGirlfriend ? "affirmative" : "negative");}
 }

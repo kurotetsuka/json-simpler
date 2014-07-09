@@ -28,10 +28,13 @@ tutorial_class_files = \
 #source files list
 source_files = \
 	src/kuro/json/JSONAdapter.java \
+	src/kuro/json/test/TestCastDerefs.java \
 	src/kuro/json/test/TestCastGets.java \
 	src/kuro/json/test/TestCasts.java \
 	src/kuro/json/test/TestContains.java \
-	src/kuro/json/test/TestGets.java \
-	src/kuro/json/test/TestSets.java \
+	src/kuro/json/test/TestDeref.java \
+	src/kuro/json/test/TestGet.java \
+	src/kuro/json/test/TestJSONAdapter.java \
+	src/kuro/json/test/TestSet.java \
 	src/kuro/json/test/TestTypeChecks.java \
 	src/kuro/json/tutorial/Tutorial.java \

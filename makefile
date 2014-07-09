@@ -41,11 +41,11 @@ package-test: package
 	file-roller $(package_base) &> /dev/null &
 
 #documentation
+docs: $(docs_path)
 $(docs_path): $(source_files)
 	rm -rf $(docs_path)
 	javadoc -classpath $(docscp) \
 		-d $(docs_path) $(source_files)
-docs: $(docs_path)
 
 #test commands
 test: test-tutorial

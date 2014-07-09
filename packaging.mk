@@ -14,7 +14,7 @@ jar_files = \
 	$(jar_all) \
 
 $(jar_base): $(base_class_files)
-	jar cf $@ -C bin kuro/json/JSONAdapter.class
+	jar cf $@ -C bin kuro/json/
 
 $(jar_docs): $(docs_path)
 	jar cf $@ $(docs_path)

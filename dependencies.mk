@@ -5,12 +5,14 @@ bin/kuro/json/JSONAdapter.class:
 
 #test package
 bin/kuro/json/test/TestJSONAdapter.class: \
+	bin/kuro/json/test/TestCastDerefs.class \
 	bin/kuro/json/test/TestCastGets.class \
 	bin/kuro/json/test/TestCasts.class \
 	bin/kuro/json/test/TestContains.class \
-	bin/kuro/json/test/TestGets.class \
-	bin/kuro/json/test/TestSets.class \
-	bin/kuro/json/test/TestTypeChecks.class
+	bin/kuro/json/test/TestDeref.class \
+	bin/kuro/json/test/TestGet.class \
+	bin/kuro/json/test/TestSet.class \
+	bin/kuro/json/test/TestTypeChecks.class \
 
 bin/kuro/json/test/TestCastGets.class: \
 	bin/kuro/json/JSONAdapter.class

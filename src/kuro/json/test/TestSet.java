@@ -15,7 +15,7 @@ import kuro.json.*;
  * Tests all the set functions for kuro.json.JSONAdapter
  */
 @RunWith(org.junit.runners.JUnit4.class)
-public class TestSets {
+public class TestSet {
 
 	@Before
 	public void setup(){}

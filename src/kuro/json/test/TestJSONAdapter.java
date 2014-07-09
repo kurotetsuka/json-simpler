@@ -10,12 +10,14 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	TestCastDerefs.class,
 	TestCastGets.class,
 	TestCasts.class,
 	TestContains.class,
 	TestDeref.class,
-	TestGets.class,
-	TestSets.class,
+	TestGet.class,
+	TestJSONAdapter.class,
+	TestSet.class,
 	TestTypeChecks.class})
 public class TestJSONAdapter {
 	public static void main( String[] args){

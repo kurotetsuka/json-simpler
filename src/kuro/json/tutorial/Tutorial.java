@@ -61,17 +61,15 @@ public class Tutorial {
 		JSONAdapter kilos_adapter = adapter.deref( "weight.kilos");
 		float weight_kilos = kilos_adapter.getFloat();
 		double weight_pounds = weight_adapter.getDouble( "pounds");
-		System.out.printf( "weight: %f kilos, %f pounds\n",
-			weight_kilos, weight_pounds);
 
 		//you can use array indexing notation to get array elements
 		Date birthday = new Date(
-			adapter.getInteger( "birthday[0]") - 1900,
-			adapter.getInteger( "birthday[1]"),
-			adapter.getInteger( "birthday[2]"));
+			adapter.derefInteger( "birthday[0]") - 1900,
+			adapter.derefInteger( "birthday[1]"),
+			adapter.derefInteger( "birthday[2]"));
 		//just like with sub-objects, you can get adapters for arrays
 		JSONAdapter deathday_adapter = adapter.get( "deathday");
-		//then use integers for gets
+		// then use integers for gets
 		Date deathday = new Date(
 			deathday_adapter.getInteger( 0) - 1900,
 			deathday_adapter.getInteger( 1),
@@ -89,7 +87,7 @@ public class Tutorial {
 
 		//no such element exceptions are thrown when the indicated element cannot be found
 		try{
-			adapter.get( "friends[10]");
+			adapter.deref( "friends[10]");
 			System.out.println( "This line won't print");}
 		catch( NoSuchElementException exception){}
 

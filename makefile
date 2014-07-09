@@ -48,7 +48,7 @@ $(docs_path): $(source_files)
 docs: $(docs_path)
 
 #test commands
-test: test-all
+test: test-tutorial
 
 test-all: bin/kuro/json/test/TestJSONAdapter.class
 	java -cp $(cp) kuro.json.test.TestJSONAdapter

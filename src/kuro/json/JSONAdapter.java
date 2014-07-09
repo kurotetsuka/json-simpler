@@ -28,7 +28,7 @@ public class JSONAdapter {
 	public JSONAdapter get( int index){
 		//validation
 		if( ! this.isJSONArray())
-			throw new ClassCastException(
+			throw new NoSuchElementException(
 				"JSONAdapter root object is not an json array");
 		if( ! this.containsIndex( index))
 			throw new NoSuchElementException(
@@ -41,7 +41,7 @@ public class JSONAdapter {
 	public JSONAdapter get( String tag){
 		//validation
 		if( ! this.isJSONObject())
-			throw new ClassCastException(
+			throw new NoSuchElementException(
 				"JSONAdapter root object is not a json object");
 		if( ! this.containsKey( tag))
 			throw new NoSuchElementException(
@@ -54,7 +54,7 @@ public class JSONAdapter {
 	public JSONAdapter get( String[] tags){
 		//validation
 		if( ! this.isJSONObject())
-			throw new ClassCastException(
+			throw new NoSuchElementException(
 				"JSONAdapter root object is not a json object");
 		if( tags.length == 0)
 			throw new IllegalArgumentException(
@@ -147,11 +147,10 @@ public class JSONAdapter {
 					adapter.get( token.name) :
 					adapter.get( token.index);}
 			catch( Exception exception){
-				throw new RuntimeException(
+				throw new NoSuchElementException(
 					String.format(
 						"Could not dereference %s from this%s",
-						token.toString(), Token.toString( tokens, i)),
-					exception);}}
+						token.toString(), Token.toString( tokens, i)));}}
 		//return adapter for desired object
 		return adapter;}
 
@@ -469,6 +468,58 @@ public class JSONAdapter {
 		//return cast
 		return adapter.getObject();}
 
+	//object get cast functions
+	public boolean derefBoolean( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getBoolean();}
+	public Number derefNumber( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getNumber();}
+	public double derefDouble( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getDouble();}
+	public float derefFloat( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getFloat();}
+	public int derefInteger( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getInteger();}
+	public long derefLong( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getLong();}
+	public String derefString( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getString();}
+	public JSONArray derefJSONArray( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getJSONArray();}
+	public JSONObject derefJSONObject( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getJSONObject();}
+	public Object derefObject( String reference){
+		//deref adapter for reference
+		JSONAdapter adapter = this.deref( reference);
+		//return cast
+		return adapter.getObject();}
+
 	//utility functions
 	public static boolean isJSONSimpleType( Object object){
 		 return (
@@ -537,12 +588,14 @@ public class JSONAdapter {
 			Vector<Token> result = new Vector<Token>();
 			char[] chars = reference.toCharArray();
 			int begin = 0, end = 0;
+
 			//while we have unparsed characters left
 			while( begin < chars.length)
 				switch( chars[begin]){
+
 					//we're indexing an array
 					case '[':{
-						end = reference.indexOf( begin + 1, ']');
+						end = reference.indexOf( ']', begin);
 						//check that bracket was matched
 						if( end < 0)
 							throw new IllegalArgumentException(
@@ -571,12 +624,14 @@ public class JSONAdapter {
 						//increment begin index and iterate
 						begin = end + 1;
 						break;}
+
 					//we've got a symbol with a preceding dot
 					case '.':{
 						begin++;
 						if( begin >= chars.length)
 							throw new IllegalArgumentException(
 								"Orphaned '.' at end of reference string");}
+
 					//we've got a symbol
 					default:{
 						//find end of current token
@@ -600,6 +655,8 @@ public class JSONAdapter {
 						break;}}
 			//return
 			return result;}
+
+		//string casts
 		public static String toString( Vector<Token> tokens){
 			String result = new String();
 			for( Token token : tokens)

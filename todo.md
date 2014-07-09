@@ -1,7 +1,4 @@
 ## todo list
-### v2.1
- * JSONAdapter.deref( String)
-
 ### v2.1.1
  * documentation
  * tests
@@ -21,7 +18,7 @@
  * JSONAdapter.setRef( String, Object) ?
  * custom exceptions for each possible failure cases
  * iterator
- * deep iterator
+ * deep (multi-level) iterator
  * test above
  * document above
  * complete fork of json-simple ?
@@ -30,3 +27,12 @@
 ### v2.0
  * finish JSONAdapter.set( String[], Object)
  * commenting
+
+### v2.1
+ * JSONAdapter.deref( String)
+ * deref casts
+ * fix tutorial
+
+### v2.1.1
+
+### v3.0

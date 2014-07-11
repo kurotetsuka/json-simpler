@@ -135,7 +135,7 @@ public class JSONAdapter {
 			throw new NullPointerException();
 		if( reference.isEmpty())
 			throw new IllegalArgumentException(
-				"reference string must not be empty");
+				"Reference string must not be empty");
 		//tokenize reference string
 		Vector<Token> tokens = Token.parse( reference);
 		//walk down token path
@@ -170,11 +170,15 @@ public class JSONAdapter {
 		//we're not an object, so we cannot contain a key
 		else return false;}
 	public boolean containsValue( Object value){
-		//validate type
+		//we're an object
 		if( this.isJSONObject()){
 			JSONObject object = this.getJSONObject();
 			return object.containsValue( value);}
-		//we're not an object, so we cannot contain a vlue
+		//we're an array
+		if( this.isJSONArray()){
+			JSONArray array = this.getJSONArray();
+			return array.contains( value);}
+		//we're not an object nor array, so we cannot contain a vlue
 		else return false;}
 
 	//type check functions

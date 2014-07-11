@@ -20,11 +20,9 @@ import kuro.json.JSONAdapter;
  */
 public class Tutorial {
 	public static void main( String[] args){
-		//
+		//first load your data
 		String filename = "data/tutorial.json";
 		File file = new File( filename);
-
-		//first load your data
 		String data = new String();
 		try {
 			BufferedReader reader =
@@ -46,7 +44,7 @@ public class Tutorial {
 			exception.printStackTrace();
 			return;}
 
-		//give your root object to my JSONAdapter
+		//give your parsed root object to a JSONAdapter
 		JSONAdapter adapter = new JSONAdapter( root);
 
 		//now you can easily read your data!
@@ -55,11 +53,9 @@ public class Tutorial {
 		boolean likesCake = adapter.getBoolean( "likes-cake");
 
 		//you can use dot-dereferencing notation to get sub-objects
-		//float weight_kilos = adapter.getFloat( "weight.kilos");
-		//alternative you can get adapters for sub-objects
+		float weight_kilos = adapter.derefFloat( "weight.kilos");
+		//alternatively, you can get sub-adapters for sub-objects
 		JSONAdapter weight_adapter = adapter.get( "weight");
-		JSONAdapter kilos_adapter = adapter.deref( "weight.kilos");
-		float weight_kilos = kilos_adapter.getFloat();
 		double weight_pounds = weight_adapter.getDouble( "pounds");
 
 		//you can use array indexing notation to get array elements
@@ -75,15 +71,21 @@ public class Tutorial {
 			deathday_adapter.getInteger( 1),
 			deathday_adapter.getInteger( 2));
 
-		//if you want you can get objects and cast it yourself
+		//if you want, you can get the raw json-simple objects and cast them yourself
 		JSONArray friends = adapter.getJSONArray( "friends");
 		Object friend_object = friends.get( 0);
 		String friend = null;
 		if( friend_object instanceof String)
 			friend = (String) friend_object;
 
+		//there are also contains functions
+		boolean friendsWithMark =
+			adapter.get("friends").containsValue( "Mark");
+
 		//there's also null checks, of course
 		boolean hasGirlfriend = ! adapter.isNull( "girlfriend");
+		//and type checks
+		boolean age_isint = adapter.isInteger( "age");
 
 		//no such element exceptions are thrown when the indicated element cannot be found
 		try{
@@ -97,6 +99,14 @@ public class Tutorial {
 			System.out.println( "This line won't print");}
 		catch( ClassCastException exception){}
 
+		//illegal argument exceptions are thrown when a dereference string is incorrectly formatted
+		try{
+			System.out.printf(
+				"asdf:%s\n",
+				adapter.deref( "[0.asdf]"));
+			System.out.println( "This line won't print");}
+		catch( IllegalArgumentException exception){}
+
 		//just to prove that everything worked
 		System.out.printf( "name: %s\n", name);
 		System.out.printf( "age: %d years\n", age);
@@ -107,6 +117,7 @@ public class Tutorial {
 		System.out.printf( "birthday: %tF\n", birthday);
 		System.out.printf( "deathday: %tF\n", deathday);
 		System.out.printf( "first friend: %s\n", friend);
+		System.out.printf( "friends with mark: %b\n", friendsWithMark);
 		System.out.printf( "has girlfriend: %s\n",
 			hasGirlfriend ? "affirmative" : "negative");}
 }

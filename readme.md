@@ -10,8 +10,8 @@ Drone: [drone.io/github.com/kurotetsuka/json-simpler](https://drone.io/github.co
 Site: [kurotetsuka.github.io/json-simpler](http://kurotetsuka.github.io/json-simpler/)  
 Javadoc: [kurotetsuka.github.io/json-simpler/doc](http://kurotetsuka.github.io/json-simpler/doc/)  
 
-Latest Release: [1.0.0](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.0)  
-Latest Beta: [1.0.0b8](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.0b8)  
-Latest Alpha: [1.0.1a3](https://github.com/kurotetsuka/json-simpler/releases/tag/v1.0.1a3)  
+Latest Release: [2.0](https://github.com/kurotetsuka/json-simpler/releases/tag/v2.0)  
+Latest Beta: [2.1b2](https://github.com/kurotetsuka/json-simpler/releases/tag/v2.1b2)  
+Latest Alpha: [2.0a1](https://github.com/kurotetsuka/json-simpler/releases/tag/v2.0a1)  
 Build Status: [![Build Status](https://drone.io/github.com/kurotetsuka/json-simpler/status.png)](https://drone.io/github.com/kurotetsuka/json-simpler/latest)
 

@@ -705,22 +705,43 @@ public class JSONAdapter {
 		public int index;
 
 		//constructors
+		/**
+		 * Create a new token from the given name
+		 * @param name the name of the token
+		 */
 		public Token( String name){
 			this.symbol = true;
 			this.name = name;
 			this.index = -1;}
+		/**
+		 * Create a new token from the given index
+		 * @param index the index of the token
+		 */
 		public Token( int index){
 			this.symbol = false;
 			this.name = null;
 			this.index = index;}
 
 		//Accessors
+		/**
+		 * Check if this token is a name
+		 * @return true, if this token is a name, false otherwise
+		 */
 		public boolean isName(){
 			return symbol;}
+		/**
+		 * Check if this token is an index
+		 * @return true, if this token is an index, false otherwise
+		 */
 		public boolean isIndex(){
 			return ! symbol;}
 
 		//utility function
+		/**
+		 * Parse a string into a list of tokens
+		 * @param reference a reference string to parse
+		 * @return a vector of tokens that was parsed form the given reference string
+		 */
 		public static Vector<Token> parse( String reference){
 			//setup
 			Vector<Token> result = new Vector<Token>();

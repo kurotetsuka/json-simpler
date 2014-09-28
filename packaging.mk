@@ -30,14 +30,14 @@ package_files = \
 	$(package_all) \
 
 $(package_base): \
-		$(jar_base) gnu-lgpl-v3.0.md license.md
+		$(jar_base) legal/gnu-lgpl-v3.0.md license.md
 	tar -cf $@ \
-		$(jar_base) gnu-lgpl-v3.0.md license.md
+		$(jar_base) legal/gnu-lgpl-v3.0.md license.md
 $(package_all): \
 		$(docs_path) $(jar_files) lib/json-simple-*.jar \
-		data gnu-lgpl-v3.0.md license.md readme.md \
+		data legal/gnu-lgpl-v3.0.md license.md readme.md \
 		$(source_files)
 	tar -cf $@ \
 		$(docs_path) $(jar_files) lib/json-simple-*.jar \
-		data gnu-lgpl-v3.0.md license.md readme.md \
+		data legal/gnu-lgpl-v3.0.md license.md readme.md \
 		$(source_files)

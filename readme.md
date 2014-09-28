@@ -1,9 +1,9 @@
-## [json-simpler](http://kurotetsuka.github.io/json-simpler/) :: An extension to [json-simple](https://code.google.com/p/json-simple/) ##
+## [json-simpler](http://kurotetsuka.github.io/json-simpler/) :: An extension to [json-simple](https://code.google.com/p/json-simple/)
 
 By: [kurotetsuka](https://github.com/kurotetsuka)  
-This library is released under the GNU LGPL. See [license.md](license.md) for details.
+This library is released under the GNU LGPL. See [license.md](license.md) and [gnu-lgpl-v3.0.md](legal/gnu-lgpl-v3.0.md) for details.
 
------------------------------------------------
+------------------------------------------------------------------------
 
 Github: [github.com/kurotetsuka/json-simpler](https://github.com/kurotetsuka/json-simpler/)  
 Drone: [drone.io/github.com/kurotetsuka/json-simpler](https://drone.io/github.com/kurotetsuka/json-simpler)  

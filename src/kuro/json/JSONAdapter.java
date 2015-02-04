@@ -16,7 +16,7 @@ public class JSONAdapter {
 	/**
 	 * Create a new adapter to a json-simple type. These valid types include the following classes and any of their extentions: JSONArray, JSONObject, Boolean, Double, Long, String, null.
 	 * 
-	 * @param object The desired root object of the adapter. Must be a valid json-simple type.
+	 * @param root The desired root object of the adapter. Must be a valid json-simple type.
 	 * @throws IllegalArgumentException if the passed object was not a valid json-simple type.
 	 */
 	public JSONAdapter( Object root){

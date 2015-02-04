@@ -18,8 +18,8 @@ options =
 
 #includes
 include lists.mk
-include dependencies.mk
-include packaging.mk
+include deps.mk
+include pkg.mk
 
 #compilation definitions
 $(class_files): bin/%.class : src/%.java

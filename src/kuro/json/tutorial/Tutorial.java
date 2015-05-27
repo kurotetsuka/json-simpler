@@ -1,6 +1,6 @@
 package kuro.json.tutorial;
 
-//standard library imports
+// standard library imports
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,11 +8,11 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-//json-simple imports
+// json-simple imports
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-//json-simpler imports
+// json-simpler imports
 import kuro.json.JSONAdapter;
 
 /**
@@ -20,7 +20,7 @@ import kuro.json.JSONAdapter;
  */
 public class Tutorial {
 	public static void main( String[] args){
-		//first load your data
+		// first load your data
 		String filename = "data/tutorial.json";
 		File file = new File( filename);
 		String data = new String();
@@ -35,7 +35,7 @@ public class Tutorial {
 			exception.printStackTrace();
 			return;}
 
-		//parse your data to a JSONObject (or JSONArray)
+		// parse your data to a JSONObject (or JSONArray)
 		Object root = null;
 		try {
 			root = new JSONParser().parse( data);}
@@ -44,26 +44,26 @@ public class Tutorial {
 			exception.printStackTrace();
 			return;}
 
-		//give your parsed root object to a JSONAdapter
+		// give your parsed root object to a JSONAdapter
 		JSONAdapter adapter = new JSONAdapter( root);
 
-		//now you can easily read your data!
+		// now you can easily read your data!
 		String name = adapter.getString( "name");
 		int age = adapter.getInteger( "age");
 		boolean likesCake = adapter.getBoolean( "likes-cake");
 
-		//you can use dot-dereferencing notation to get sub-objects
+		// you can use dot-dereferencing notation to get sub-objects
 		float weight_kilos = adapter.derefFloat( "weight.kilos");
-		//alternatively, you can get sub-adapters for sub-objects
+		// alternatively, you can get sub-adapters for sub-objects
 		JSONAdapter weight_adapter = adapter.get( "weight");
 		double weight_pounds = weight_adapter.getDouble( "pounds");
 
-		//you can use array indexing notation to get array elements
+		// you can use array indexing notation to get array elements
 		Date birthday = new Date(
 			adapter.derefInteger( "birthday[0]") - 1900,
 			adapter.derefInteger( "birthday[1]"),
 			adapter.derefInteger( "birthday[2]"));
-		//just like with sub-objects, you can get adapters for arrays
+		// just like with sub-objects, you can get adapters for arrays
 		JSONAdapter deathday_adapter = adapter.get( "deathday");
 		// then use integers for gets
 		Date deathday = new Date(
@@ -71,35 +71,35 @@ public class Tutorial {
 			deathday_adapter.getInteger( 1),
 			deathday_adapter.getInteger( 2));
 
-		//if you want, you can get the raw json-simple objects and cast them yourself
+		// if you want, you can get the raw json-simple objects and cast them yourself
 		JSONArray friends = adapter.getJSONArray( "friends");
 		Object friend_object = friends.get( 0);
 		String friend = null;
 		if( friend_object instanceof String)
 			friend = (String) friend_object;
 
-		//there are also contains functions
+		// there are also contains functions
 		boolean friendsWithMark =
 			adapter.get("friends").containsValue( "Mark");
 
-		//there's also null checks, of course
+		// there's also null checks, of course
 		boolean hasGirlfriend = ! adapter.isNull( "girlfriend");
-		//and type checks
+		// and type checks
 		boolean age_isint = adapter.isInteger( "age");
 
-		//no such element exceptions are thrown when the indicated element cannot be found
+		// no such element exceptions are thrown when the indicated element cannot be found
 		try{
 			adapter.deref( "friends[10]");
 			System.out.println( "This line won't print");}
 		catch( NoSuchElementException exception){}
 
-		//class cast exceptions are thrown when the element is found, but is of the wrong type
+		// class cast exceptions are thrown when the element is found, but is of the wrong type
 		try{
 			adapter.getInteger( "name");
 			System.out.println( "This line won't print");}
 		catch( ClassCastException exception){}
 
-		//illegal argument exceptions are thrown when a dereference string is incorrectly formatted
+		// illegal argument exceptions are thrown when a dereference string is incorrectly formatted
 		try{
 			System.out.printf(
 				"asdf:%s\n",
@@ -107,7 +107,7 @@ public class Tutorial {
 			System.out.println( "This line won't print");}
 		catch( IllegalArgumentException exception){}
 
-		//just to prove that everything worked
+		// just to prove that everything worked
 		System.out.printf( "name: %s\n", name);
 		System.out.printf( "age: %d years\n", age);
 		System.out.printf( "likes cake: %s\n",

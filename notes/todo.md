@@ -1,11 +1,11 @@
 ## todo list
 ### v2.1.1
  - complete javadoc comments
- - double check tutorial
 
-### v2.1.1
+### v2.2
  - documentation
  - tests
+ - double check tutorial (again)
 
 ### v3.0
 
@@ -18,6 +18,7 @@
 	 - JSONAdapter.merge( JSONObject)
 	 - JSONAdapter.merge( Object) ?
  - reference set ( converse of deref )
+	 - JSONAdapter.refset( String, Object) ?
 	 - JSONAdapter.reference( String, Object) ?
 	 - JSONAdapter.ref( String, Object) ?
 	 - JSONAdapter.setRef( String, Object) ?

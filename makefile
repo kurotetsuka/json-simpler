@@ -1,4 +1,4 @@
-#globals
+# globals
 default: build
 freshen: clean build
 clean:
@@ -7,8 +7,8 @@ clean:
 	rm -rf pkg/*
 	rm -rf jar/*
 
-#variables
-version = 2.1.1a1
+# variables
+version = 2.1.1a2
 cp = bin:lib/*
 docscp = lib/*:
 docs_path = javadoc
@@ -16,20 +16,23 @@ options =
 #warnings = -Xlint:deprecation
 #warnings = -Xlint:unchecked
 
-#includes
+# includes
 include lists.mk
 include deps.mk
 include pkg.mk
 
-#compilation definitions
+# compilation definitions
 $(class_files): bin/%.class : src/%.java
 	javac -cp $(cp) -d bin $(warnings) $<
 
-#command definitions
+# command definitions
 build: $(class_files)
 build-base: $(base_class_files)
 
 run: test
+
+ci:
+	make-ci build $(source_files)
 
 jar: $(jar_base)
 jars: $(jar_files)
@@ -40,15 +43,18 @@ packages: $(package_files)
 package-test: package
 	file-roller $(package_base) &> /dev/null &
 
-#documentation
+# documentation
 docs: $(docs_path)
 $(docs_path): $(source_files)
 	rm -rf $(docs_path)
 	javadoc -classpath $(docscp) \
 		-d $(docs_path) $(source_files)
 
-#test commands
+# test commands
 test: test-tutorial
+
+test-tutorial: bin/kuro/json/tutorial/Tutorial.class
+	java -cp $(cp) kuro.json.tutorial.Tutorial
 
 test-all: bin/kuro/json/test/TestJSONAdapter.class
 	java -cp $(cp) kuro.json.test.TestJSONAdapter
@@ -65,6 +71,3 @@ test-sets: bin/kuro/json/test/TestSets.class
 	java -cp $(cp) kuro.json.test.TestSets
 test-typechecks: bin/kuro/json/test/TestTypeChecks.class
 	java -cp $(cp) kuro.json.test.TestTypeChecks
-
-test-tutorial: bin/kuro/json/tutorial/Tutorial.class
-	java -cp $(cp) kuro.json.tutorial.Tutorial

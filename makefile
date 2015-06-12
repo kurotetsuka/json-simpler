@@ -12,6 +12,7 @@ version = 2.1.1a2
 cp = bin:lib/*
 docscp = lib/*:
 docs_path = javadoc
+java_version = -source 1.8 -target 1.8
 options =
 #warnings = -Xlint:deprecation
 #warnings = -Xlint:unchecked
@@ -23,7 +24,7 @@ include pkg.mk
 
 # compilation definitions
 $(class_files): bin/%.class : src/%.java
-	javac -cp $(cp) -d bin $(warnings) $<
+	javac -cp $(cp) -d bin $(java_version) $(warnings) $<
 
 # command definitions
 build: $(class_files)
@@ -53,11 +54,17 @@ $(docs_path): $(source_files)
 # test commands
 test: test-tutorial
 
+test-all: \
+	test-tutorial \
+	test-castgets \
+	test-casts \
+	test-contains \
+	test-gets \
+	test-sets \
+	test-typechecks
+
 test-tutorial: bin/kuro/json/tutorial/Tutorial.class
 	java -cp $(cp) kuro.json.tutorial.Tutorial
-
-test-all: bin/kuro/json/test/TestJSONAdapter.class
-	java -cp $(cp) kuro.json.test.TestJSONAdapter
 
 test-castgets: bin/kuro/json/test/TestCastGets.class
 	java -cp $(cp) kuro.json.test.TestCastGets
